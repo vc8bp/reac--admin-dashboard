@@ -9,6 +9,8 @@ const SidebarContainer = styled.div`
     background-color: rgb(251, 251, 255);
     position: sticky;
     top: 50px;
+    width: max-content;
+    
 `
 const SidebarWrapper = styled.div`
     padding: 20px;
