@@ -10,6 +10,10 @@ const SidebarContainer = styled.div`
     position: sticky;
     top: 50px;
     width: max-content;
+
+    @media (max-width: 700px) {
+        display: none;
+    }
     
 `
 const SidebarWrapper = styled.div`
