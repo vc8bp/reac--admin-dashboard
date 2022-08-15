@@ -1,6 +1,9 @@
 import React from 'react'
 import { NotificationsNone, Language, Settings } from '@material-ui/icons';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../redux/userRedux';
+import { Link } from 'react-router-dom';
 
 const NavbarContainer = styled.div`
     width: 100%;
@@ -50,6 +53,10 @@ const IconBadge = styled.span`
     justify-content: center;
     font-size: 10px;
 `
+
+const Auth = styled.p`
+    margin: 5px;
+`
 const Avatar = styled.img`
     width: 40px;
     height: 40px;
@@ -57,27 +64,35 @@ const Avatar = styled.img`
 `
 
 const Navbar = () => {
+
+    const user = useSelector(state => state.user.currentUser)
+    //console.log(user)
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logoutUser());
+    }
+
     const rndNmr = () => Math.floor(Math.random() * 99) + 1;
     
     return (
         <NavbarContainer>
             <NavbarWrapper>
                 <TopLeft>
-                    <Logo>vc8bp</Logo>
+                    <Logo><Link to="/">vc8bp</Link></Logo>
                 </TopLeft>
                 <TopRight>
-                    <IconContainer>
-                        <NotificationsNone />
-                        <IconBadge>5</IconBadge>
-                    </IconContainer>
-                    <IconContainer>
-                        <Language />
-                        <IconBadge>3</IconBadge>
-                    </IconContainer>
-                    <IconContainer>
-                        <Settings />
-                    </IconContainer>
-                    <Avatar src={`https://randomuser.me/api/portraits/women/${rndNmr()}.jpg`} alt="avatar" />
+                    {!user ?
+                    <>
+                    <Auth><Link to="/login">Login</Link></Auth>
+                    <Auth>Signup</Auth>
+                    </>
+                : 
+                    <>
+                    <Avatar src={user.avatar} alt="avatar" />
+                    <Auth onClick={handleLogout}>Logout</Auth>
+                    </>
+                }
                 </TopRight>
             </NavbarWrapper>
         </NavbarContainer>

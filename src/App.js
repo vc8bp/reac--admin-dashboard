@@ -1,15 +1,20 @@
 import Home from "./pages/Home";
-import {Route, Routes} from "react-router-dom"
+import {Navigate, Route, Routes} from "react-router-dom"
 
 import styled from "styled-components";
+import Login from "./pages/Login";
+import { useSelector } from "react-redux";
 
 
 
 function App() {
+
+  const user = useSelector(state => state.user.currentUser)
   return (
     <>
         <Routes>  
-          <Route path="/" element={<Home/>}></Route>
+          <Route path="/login" element={user ? <Navigate to="/"/> : <Login/>}/>
+          <Route path="/" element={!user ? <Navigate to="/login"/> : <Home/>}/>
         </Routes>
     </>
   );
