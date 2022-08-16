@@ -1,9 +1,9 @@
 import Home from "./pages/Home";
 import {Navigate, Route, Routes} from "react-router-dom"
-
-import styled from "styled-components";
+import './App.css'
 import Login from "./pages/Login";
 import { useSelector } from "react-redux";
+import './index.css'
 
 
 

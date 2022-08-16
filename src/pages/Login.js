@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import { mobile } from '../Responsive'
 import { Link } from 'react-router-dom'
-import { login } from '../redux/apiuser'
+import { login } from '../redux/apiCalls/auth.js'
 import { useDispatch, useSelector } from 'react-redux'
 
 //import { resetError } from '../redux/userRedux'
@@ -95,7 +95,7 @@ function Login(props) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isFetching, isError, currentUser} = useSelector(state => state.user)
+  const { isFetching, isError} = useSelector(state => state.user)
 
   const dispatch = useDispatch()
 

@@ -1,5 +1,4 @@
-import React from 'react'
-import { NotificationsNone, Language, Settings } from '@material-ui/icons';
+import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/userRedux';
@@ -66,7 +65,6 @@ const Avatar = styled.img`
 const Navbar = () => {
 
     const user = useSelector(state => state.user.currentUser)
-    //console.log(user)
     const dispatch = useDispatch();
 
     const handleLogout = () => {
