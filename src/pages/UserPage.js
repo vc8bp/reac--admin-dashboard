@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { req } from '../axiosReqMethods'
-
+import { mobile } from '../Responsive'
 
 
 const Container = styled.div`
@@ -16,19 +16,23 @@ padding: 15px;
 border-radius: 1vmax;
 `
 
-const Wrapper = styled.div`
-  /* width: max(500px); */
-
-`
 
 const TopSection = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+
+  ${mobile({
+    flexDirection: "column",
+    margin: "10px"
+  })} 
+
+  
 `
 const Avatar = styled.img`
   width: 200px;
   height: 200px;
+  border-radius: 10px 100px / 150px;
 `
 const UserID = styled.h2``
 
@@ -44,14 +48,17 @@ const Form = styled.form`
 const Input = styled.input`
   flex: 1 0 33%; 
   margin: 20px;
-  padding: 10px;
+  padding: 15px;
+  border-radius: 1vmin;
+  border: none;
+  background-color: #d2e5e5;
 
 `
 
 const SubmitButton = styled.button`
   width: 100%;
-  margin: 0 30px;
-  padding: 1  0px;
+  margin: 0 30%;
+  padding: 10px 0px;
 `
 
 const BottomSection = styled.div``
@@ -86,7 +93,6 @@ function UserPage() {
     <>
       {user && 
       <Container>
-        <Wrapper>
         <TopSection>
           <Avatar src={user?.avatar}/>
           <UserID>userID : {user._id}</UserID>
@@ -101,7 +107,6 @@ function UserPage() {
             <SubmitButton>Save user</SubmitButton>
           </Form>
         </MiddleSection>
-        </Wrapper>
       </Container>}
     </>
   )
