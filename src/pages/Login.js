@@ -103,7 +103,7 @@ function Login(props) {
 
   const submit = async (e) => {
     
-    e.preventDefault();
+    //e.preventDefault();
     console.table(email, password)
     
     login( dispatch ,{ email , password })

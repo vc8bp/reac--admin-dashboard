@@ -69,6 +69,8 @@ const Navbar = () => {
 
     const handleLogout = () => {
         dispatch(logoutUser());
+        localStorage.clear();
+        
     }
 
     const rndNmr = () => Math.floor(Math.random() * 99) + 1;

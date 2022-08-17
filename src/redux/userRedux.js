@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+                import { createSlice } from "@reduxjs/toolkit"
 
 const userSlice = createSlice({
     name: "user",
@@ -40,6 +40,8 @@ const userSlice = createSlice({
         },
         logoutUser: (state) => {
             state.currentUser = null;
+            localStorage.clear();
+            console.log("clear logout runed")
         }
     }
 })

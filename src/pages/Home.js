@@ -5,11 +5,6 @@ import SlideBar from '../components/SlideBar';
 import User from '../components/User';
 
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-`
-
 const HomeComponent = styled.div`
   flex: 5;
   width: 100%;
@@ -22,13 +17,11 @@ const HomeComponent = styled.div`
 function Home() {
   return (
     <>
-      <NavBar/>
-      <Container>
-        <SlideBar/>
+      
         <HomeComponent>
             <User/>
         </HomeComponent>
-      </Container>
+ 
     </>
   )
 }

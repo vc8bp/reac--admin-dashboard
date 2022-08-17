@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { req } from '../axiosReqMethods'
 import { fetchUsers } from '../redux/apiCalls/users'
+import { Link } from 'react-router-dom'
 
 
 
@@ -89,16 +90,14 @@ const BottomContainer = styled.div`
 function User() {
     const data = useSelector(state => state.users);
     const users = data.fetchedUsers;
-    console.log(users)
+    const userisAdmin = useSelector(state => state.user.currentUser.isAdmin);
+
     const dispatch = useDispatch()
 
     useEffect(()=>{
-        fetchUsers(dispatch);   
-    },[])
+        userisAdmin && fetchUsers(dispatch);  
+    },[userisAdmin])
 
-    users.map((p) => {
-        console.log(p.isAdmin)
-    })
 
   return (
     <Container>
@@ -123,13 +122,13 @@ function User() {
             <hr/> 
             <MiddleWrapper>
                 {users?.map((p) => (
-                    <UsersContainer key={p.id}>
+                    <UsersContainer key={p._id}>
                     <Avatar src={ p.avatar && "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}/>
                     <Name>{`${p.firstName} ${p.lastName}`}</Name>
                     <Email>{p.email}</Email>
                     <IsAdmin value = {p.isAdmin} >{JSON.stringify(p.isAdmin)}</IsAdmin>
                     <IconContainer>
-                        <Edit/>
+                        <Link to={`/user/${p._id}`}><Edit/></Link>
                         <Delete/>
                     </IconContainer>
                         
