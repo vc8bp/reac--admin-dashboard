@@ -15,3 +15,12 @@ export const  fetchUsers = async (dispatch) => {
     
 
 }
+
+export const updateUser = async (userID, data) => {
+    try {
+        const res = req.put(`/api/users/${userID}`, data);
+        return res;
+    } catch(err) {
+        console.log(`error is ${err}`)
+    }
+}

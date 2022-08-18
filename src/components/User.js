@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { req } from '../axiosReqMethods'
 import { fetchUsers } from '../redux/apiCalls/users'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 
 
@@ -121,9 +122,10 @@ function User() {
             </MiddleWrapper>
             <hr/> 
             <MiddleWrapper>
+                
                 {users?.map((p) => (
                     <UsersContainer key={p._id}>
-                    <Avatar src={ p.avatar && "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}/>
+                    <Avatar src={ p.avatar}/>
                     <Name>{`${p.firstName} ${p.lastName}`}</Name>
                     <Email>{p.email}</Email>
                     <IsAdmin value = {p.isAdmin} >{JSON.stringify(p.isAdmin)}</IsAdmin>

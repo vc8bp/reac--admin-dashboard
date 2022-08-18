@@ -112,7 +112,6 @@ function Login(props) {
 
   return (
     <>
-    <Navbar/>
     <Container>
         <Wrapper>
             <Title>Login</Title>
