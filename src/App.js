@@ -20,9 +20,9 @@ function App() {
   const user = useSelector(state => state.user.currentUser)
   return (
     <>
-    <Navbar/>
+    {user && <Navbar/>}
     <Container>
-      <SlideBar/>
+      {user && <SlideBar/>}
       <Routes>  
         <Route path="/login" element={user ? <Navigate to="/"/> : <Login/>}/>
         <Route path="/" element={!user ? <Navigate to="/login"/> : <Home/>}/>

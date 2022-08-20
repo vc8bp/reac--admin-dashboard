@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Container = styled.div`
     width: 100vw;
-    height: calc(100vh - 60px); //60px of navbar
+    height: ${props => props.is ? "calc(100vh - 60px)" : "100vh"}; //60px of navbar
     display: flex;
     justify-content: center;
     align-items: center;
@@ -93,6 +93,7 @@ function Login(props) {
     document.title = `SatnamCreation - ${props.title}`
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const user = useSelector(state => state.user.currentUser) //is logedin user?
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isFetching, isError} = useSelector(state => state.user)
@@ -112,13 +113,13 @@ function Login(props) {
 
   return (
     <>
-    <Container>
+    <Container is={user ? true : false}>
         <Wrapper>
             <Title>Login</Title>
             <Form autoComplete='on'>
                 <Input type="email" placeholder='Email' onChange={(e)=> setEmail(e.target.value)}></Input>
                 <Input type="password" placeholder='Password' onChange={(e)=> setPassword(e.target.value)} autoComplete="off"></Input>
-                <HelpLink style={{marginLeft:"auto", marginRight:"0" }}><Link to="/forgotpassword">Forgot your password?</Link></HelpLink>
+                <HelpLink style={{marginLeft:"auto", marginRight:"0" }}><a href={`${process.env.REACT_APP_MAIN_SITE_URL}/forgotpassword`}>Forgot your password?</a></HelpLink>
                 <Button onClick={submit} disabled={isFetching}>Login</Button>
             </Form>
             {isError && <Error>{isError.error}</Error>}

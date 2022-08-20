@@ -37,6 +37,7 @@ const userSlice = createSlice({
         reserError: (state) => {
             state.isError = false;
             state.error = null;
+            state.isFetching = false;
         },
         logoutUser: (state) => {
             state.currentUser = null;
