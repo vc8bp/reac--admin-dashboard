@@ -1,4 +1,4 @@
-import { req } from "../../axiosReqMethods";
+import { publicreq } from "../../axiosReqMethods";
 import { loginFailed, start, reserError, loginSuccess } from "../userRedux";
 
 
@@ -6,11 +6,12 @@ export const login = async (dispatch, user) => {
     const {email, password} = user;
     dispatch(start());
     try {
-        const res = await req.post("api/auth/login", {email, password});
-        dispatch(loginSuccess(res.data));
-    } catch (error) {
+        const res = await publicreq.post("api/auth/login", {email, password});
+        dispatch(loginSuccess(res?.data));
         
-        dispatch(loginFailed(error.response.data));
+    } catch (error) {
+        console.log(error)
+        dispatch(loginFailed(error.response?.data));
         //reseting error
         setTimeout(() => {
             dispatch(reserError())

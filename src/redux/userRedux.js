@@ -25,6 +25,7 @@ const userSlice = createSlice({
             state.currentUser = action.payload;
             state.isError = false;
             state.error = null;
+            
 
         },
         loginFailed: (state, action) => {

@@ -5,7 +5,6 @@ import {
   fetchSuccess,
   reserError,
 } from "../UseersComponentRedux";
-import { logoutUser } from "../userRedux";
 
 export const fetchUsers = async (dispatch) => {
   dispatch(fetchStart());
@@ -13,16 +12,8 @@ export const fetchUsers = async (dispatch) => {
     const users = await req.get("/api/users/allinfo");
     dispatch(fetchSuccess(users.data));
     console.log("is not error in login");
-  } catch (error) {
-    if (error.response.data === "token is not valid") {
-      console.log("is error in login");
-
-      dispatch(fetchFailed("your session is expired"));
-      dispatch(logoutUser());
-      localStorage.clear();
-    } else {
+  } catch (error) { 
       dispatch(fetchFailed(error.response.data));
-    }
 
     setTimeout(() => {
       dispatch(reserError());
