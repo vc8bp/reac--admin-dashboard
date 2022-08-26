@@ -116,11 +116,11 @@ function Login(props) {
     <Container is={user ? true : false}>
         <Wrapper>
             <Title>Login</Title>
-            <Form autoComplete='on'>
+            <Form autoComplete='on' onSubmit={submit}>
                 <Input type="email" placeholder='Email' onChange={(e)=> setEmail(e.target.value)}></Input>
                 <Input type="password" placeholder='Password' onChange={(e)=> setPassword(e.target.value)} autoComplete="off"></Input>
                 <HelpLink style={{marginLeft:"auto", marginRight:"0" }}><a href={`${process.env.REACT_APP_MAIN_SITE_URL}/forgotpassword`}>Forgot your password?</a></HelpLink>
-                <Button onClick={submit} disabled={isFetching}>Login</Button>
+                <Button  disabled={isFetching}>Login</Button>
             </Form>
             {isError && <Error>{isError.error}</Error>}
             

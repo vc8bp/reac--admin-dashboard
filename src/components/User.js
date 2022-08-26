@@ -1,13 +1,11 @@
 import { Delete, Edit } from '@material-ui/icons'
 import React from 'react'
-import { useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { req } from '../axiosReqMethods'
 import { fetchUsers } from '../redux/apiCalls/users'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import { clearUsers } from '../redux/UseersComponentRedux'
 
 
 
@@ -94,9 +92,13 @@ function User() {
     const userisAdmin = useSelector(state => state.user.currentUser.isAdmin);
 
     const dispatch = useDispatch()
-
+    console.log()
     useEffect(()=>{
         userisAdmin && fetchUsers(dispatch);  
+
+        return () => {
+            dispatch(clearUsers())
+        }
     },[userisAdmin])
 
 

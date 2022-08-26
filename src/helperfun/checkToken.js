@@ -2,7 +2,6 @@ import jwt_decode from 'jwt-decode'
 
 
 export function isAdmin(Token)  {
-    console.log(`inside funtion token = ${Token}`)
     const decodedToken = jwt_decode(Token)
     console.log(decodedToken)
     if(decodedToken.isAdmin === true){
@@ -13,7 +12,6 @@ export function isAdmin(Token)  {
 }
 
 export function isValidTokenWithAdmin(Token) {
-    console.log("isValidTokenWithAdmin called")
     const decodedToken = jwt_decode(Token);
     const currentDate = Date.now();
       

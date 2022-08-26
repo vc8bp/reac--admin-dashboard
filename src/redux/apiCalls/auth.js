@@ -8,6 +8,7 @@ export const login = async (dispatch, user) => {
     try {
         const res = await publicreq.post("api/auth/login", {email, password});
         dispatch(loginSuccess(res?.data));
+        console.log("LOgin done")
         
     } catch (error) {
         console.log(error)

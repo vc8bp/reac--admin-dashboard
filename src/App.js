@@ -20,42 +20,38 @@ justify-content: center;
 
 
 function App() {
-  const [tokenCheck, setTokenCheck] = useState(false)
+  // const [tokenCheck, setTokenCheck] = useState(false)
   const user = useSelector(state => state.user.currentUser)
-  console.log(user?.accessToken)
+  // console.log(user?.accessToken)
 
-  useEffect(() => {
-    console.log(`my token = ${user.accessToken}`);
-    const decode = jwt_decode(user.accessToken);
-    console.log(decode)
+  // useEffect(() => {
+  //   console.log(`my token = ${user?.accessToken}`);
+  //   const decode = jwt_decode(user?.accessToken);
+  //   console.log(decode)
 
-    if(user) {
-      try { 
-      console.log("break 1")
-      const Token = user?.accessToken;
-      console.log(Token)
-      console.log("break 2")
-      const result = isValidTokenWithAdmin(Token); //inside funtion this passed token is getting undefined
-      console.log("break 3")
-      console.log(result)
-      console.log("break 4")
-      if(result === false) {
-        console.log("break 5")
-        setTokenCheck(false);
-        console.log("break 6")
-        logoutUser()
-        console.log("break 7")
-      } else {
-        setTokenCheck(true)
-        console.log("break 8")
-      }
+  //   if(user) {
+  //     try { 
+      
+  //     const Token = user?.accessToken;
+     
+  //     //const result = isValidTokenWithAdmin(Token); //inside funtion this passed token is getting undefined
+   
+  //     if(result === false) {
+    
+  //       setTokenCheck(false);
+  //       logoutUser()
+  
+  //     } else {
+  //       setTokenCheck(true)
+   
+  //     }
 
-    } catch (error) {
-        console.log("error from error bolte")
-        console.log(error)
-    }
-    }
-  }, [])
+  //   } catch (error) {
+  //       console.log("error from error bolte")
+  //       console.log(error)
+  //   }
+  //   }
+  // }, [])
   
   
 

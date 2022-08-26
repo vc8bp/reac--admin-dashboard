@@ -72,9 +72,15 @@ const userSlice = createSlice({
             state.isError = false;
             state.error = null;
         },
+        clearUsers: (state) => {
+            state.fetchedUsers = [];
+            state.isFetching = false;
+            state.isError = false;
+            state.error = null;
+        }
     }
 })
 
-export const {fetchStart, fetchFailed, fetchSuccess, reserError} = userSlice.actions;
+export const {fetchStart, fetchFailed, fetchSuccess, reserError, clearUsers} = userSlice.actions;
 export default userSlice.reducer;
 
