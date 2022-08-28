@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 import Home from "./pages/Home";
 import {Navigate, Route, Routes} from "react-router-dom"
 import './App.css'
@@ -8,12 +8,12 @@ import Navbar from "./components/Navbar";
 import SlideBar from "./components/SlideBar";
 import styled from "styled-components";
 import UserPage from "./pages/UserPage";
-import jwt_decode from "jwt-decode";
-import { logoutUser } from "./redux/userRedux";
-import { isValidTokenWithAdmin } from "./helperfun/checkToken";
+
+import Users from "./pages/Users";
 
 const Container = styled.div`
 display: flex;
+flex-direction: column;
 justify-content: center;
 `
 
@@ -63,7 +63,8 @@ function App() {
       <Routes>  
         <Route path="/login" element={user ? <Navigate to="/"/> : <Login/>}/>
         <Route path="/" element={!user ? <Navigate to="/login"/> : <Home/>}/>
-        <Route path="/user/:id" element={<UserPage/>}/>
+        <Route path="/user" element={!user ? <Navigate to="/login"/> : <Users/>}/>
+        <Route path="/user/:id" element={!user ? <Navigate to="/login"/> :<UserPage/>}/>
       </Routes>
     </Container>
     </>

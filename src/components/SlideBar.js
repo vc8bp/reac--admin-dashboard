@@ -1,6 +1,8 @@
 import React from 'react'
 import { LineStyle, Timeline, TrendingUp, PermIdentity, Storefront, LocalAtm, Assessment, Drafts, Feedback, Forum, Work, Receipt, PieChart } from "@material-ui/icons";
 import styled, { css } from "styled-components";
+import { Link} from 'react-router-dom';
+
 
 
 const SidebarContainer = styled.div`
@@ -97,7 +99,7 @@ const SlideBar = () => {
                   
                             <SidebarListItem>
                                 <MyLineStyle />
-                                Home
+                                <Link to="/">Home</Link>
                             </SidebarListItem>
                   
                         <SidebarListItem>
@@ -116,12 +118,12 @@ const SlideBar = () => {
                         
                             <SidebarListItem>
                                 <MyPermIdentity />
-                                Users
+                                <Link to="/user">Users</Link>
                             </SidebarListItem>
                       
                             <SidebarListItem>
                                 <MyStorefront />
-                                Products
+                                <Link to="/products">Products</Link>
                             </SidebarListItem>
                      
                         <SidebarListItem>

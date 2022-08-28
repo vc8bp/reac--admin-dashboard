@@ -2,7 +2,7 @@
     text-decoration: none;
     color: black;
 }
-.Link {
+*.Link {
     text-decoration: none;
     color: inherit;
 }

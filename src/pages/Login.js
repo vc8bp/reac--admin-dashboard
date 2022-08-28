@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import Navbar from '../components/Navbar'
 import { mobile } from '../Responsive'
 import { Link } from 'react-router-dom'
 import { login } from '../redux/apiCalls/auth.js'
 import { useDispatch, useSelector } from 'react-redux'
+import ErrorComponent from '../components/ErrorComponent'
 
 //import { resetError } from '../redux/userRedux'
 
 const Container = styled.div`
+    position: relative;
     width: 100vw;
     height: ${props => props.is ? "calc(100vh - 60px)" : "100vh"}; //60px of navbar
     display: flex;
@@ -90,13 +91,13 @@ function Login(props) {
 
   //to change title as soon as component mounts
   useEffect(() => {
-    document.title = `SatnamCreation - ${props.title}`
+    document.title = `Name - ${props.title}`
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const user = useSelector(state => state.user.currentUser) //is logedin user?
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isFetching, isError} = useSelector(state => state.user)
+  const { isFetching, error} = useSelector(state => state.user)
 
   const dispatch = useDispatch()
 
@@ -122,14 +123,15 @@ function Login(props) {
                 <HelpLink style={{marginLeft:"auto", marginRight:"0" }}><a href={`${process.env.REACT_APP_MAIN_SITE_URL}/forgotpassword`}>Forgot your password?</a></HelpLink>
                 <Button  disabled={isFetching}>Login</Button>
             </Form>
-            {isError && <Error>{isError.error}</Error>}
             
+            {/* {console.log(error.error)} */}
             
             {/* <HelpLink><Link to="/forgotpassword">Do note remember your Password?</Link></HelpLink> */}
             <HelpLink><Link to="/signup">Create New Account</Link></HelpLink>
         </Wrapper>
+        
     </Container>
-  
+    <ErrorComponent message={error?.error}/>
     </>
   )
 }

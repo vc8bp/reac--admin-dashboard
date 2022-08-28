@@ -86,10 +86,10 @@ const BottomContainer = styled.div`
 
 `
 
-function User() {
+function Users() {
     const data = useSelector(state => state.users);
     const users = data.fetchedUsers;
-    const userisAdmin = useSelector(state => state.user.currentUser.isAdmin);
+    const userisAdmin = useSelector(state => state.user?.currentUser?.isAdmin);
 
     const dispatch = useDispatch()
     console.log()
@@ -148,4 +148,4 @@ function User() {
   )
 }
 
-export default User
+export default Users

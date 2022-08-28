@@ -1,6 +1,7 @@
 import axios from "axios";
 
 
+
 const baseURL = `${process.env.REACT_APP_BACKEND_API_BASE_URL}`;
 
 //feger out why need refrashe after login and logout
@@ -59,8 +60,30 @@ req.interceptors.request.use(config => {
                       : null;
     console.log(TOKEN)
     const token = ` bearer ${TOKEN}`;
-    config.headers['token'] = token;
+    config.headers = Object.assign({
+        token: token
+    });
 
     return config;
 })
+
+// export const privateReq = () => {
+//     const TOKEN = JSON.parse(localStorage?.getItem("persist:root"))?.currentUser 
+//                       ? JSON.parse(JSON.parse(localStorage?.getItem("persist:root"))?.currentUser)?.accessToken
+//                       : null;
+//     return axios.create({
+//         baseURL,
+//         headers : `bearer ${TOKEN}`
+//     })
+// }
+
+export const privateReq = () => {
+    return axios.create({
+       baseURL, 
+       headers: {
+       //token: `bearer ${TOKEN}`
+      }
+   });
+  
+ }
 
