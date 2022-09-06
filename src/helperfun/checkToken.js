@@ -13,11 +13,12 @@ export function isAdmin(Token)  {
 
 export function isValidTokenWithAdmin(Token) {
     const decodedToken = jwt_decode(Token);
-    const currentDate = Date.now();
-      
-      if(currentDate < decodedToken.exp){
+    const currentDate = Date.now() / 1000;
+      console.log(`currrent date : ${currentDate}`);
+      console.log(`token date : ${decodedToken.exp}`);
+      if(currentDate > decodedToken.exp){
         return {success: false, error: "token is expired"}
       } else {
-        return isAdmin()
+        return isAdmin(Token)
       }
 }

@@ -1,57 +1,46 @@
-
+import { useEffect } from "react";
 import Home from "./pages/Home";
-import {Navigate, Route, Routes} from "react-router-dom"
+import {Navigate, Route, Routes, useLocation} from "react-router-dom"
 import './App.css'
 import Login from "./pages/Login";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
 import SlideBar from "./components/SlideBar";
 import styled from "styled-components";
 import UserPage from "./pages/UserPage";
 
 import Users from "./pages/Users";
+import { isValidTokenWithAdmin } from "./helperfun/checkToken";
+import { logoutUser } from "./redux/userRedux";
 
 const Container = styled.div`
 display: flex;
-flex-direction: column;
+flex-direction: row;
 justify-content: center;
 `
 
 
 
 function App() {
+  const dispatch = useDispatch()
   // const [tokenCheck, setTokenCheck] = useState(false)
   const user = useSelector(state => state.user.currentUser)
-  // console.log(user?.accessToken)
-
-  // useEffect(() => {
-  //   console.log(`my token = ${user?.accessToken}`);
-  //   const decode = jwt_decode(user?.accessToken);
-  //   console.log(decode)
-
-  //   if(user) {
-  //     try { 
-      
-  //     const Token = user?.accessToken;
-     
-  //     //const result = isValidTokenWithAdmin(Token); //inside funtion this passed token is getting undefined
-   
-  //     if(result === false) {
-    
-  //       setTokenCheck(false);
-  //       logoutUser()
+  console.log(user?.accessToken)
+  const location = useLocation()
+  useEffect(() => {
+    if(user){
+        const res = isValidTokenWithAdmin(user?.accessToken);
+        if (res !== true) {
+          dispatch(logoutUser());
+          localStorage.clear();
+          console.log("user logout success bczof token expired");
+        } else {
+          console.log("user is admin with not expired token");
+        } 
+    }
+  }, [])
   
-  //     } else {
-  //       setTokenCheck(true)
-   
-  //     }
-
-  //   } catch (error) {
-  //       console.log("error from error bolte")
-  //       console.log(error)
-  //   }
-  //   }
-  // }, [])
+    
   
   
 

@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { fetchUsers } from '../redux/apiCalls/users'
 import { Link } from 'react-router-dom'
 import { clearUsers } from '../redux/UseersComponentRedux'
+import ErrorComponent from '../components/ErrorComponent'
 
 
 
@@ -15,7 +16,8 @@ const Container = styled.div`
     overflow: hidden;
     padding: 20px;
     border-radius: 1vmax;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 20px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
     background-color: #f6fbfb;
    
 `
@@ -86,10 +88,18 @@ const BottomContainer = styled.div`
 
 `
 
+const Error = styled.span`
+    color: red;
+    font-size: 20px;
+    font-weight: 400;
+    
+`
+
 function Users() {
     const data = useSelector(state => state.users);
     const users = data.fetchedUsers;
     const userisAdmin = useSelector(state => state.user?.currentUser?.isAdmin);
+    console.log(data)
 
     const dispatch = useDispatch()
     console.log()
@@ -102,7 +112,7 @@ function Users() {
     },[userisAdmin])
 
 
-  return (
+  return ( <>
     <Container>
         <Wrapper>
         <TopContainer>
@@ -123,8 +133,7 @@ function Users() {
                     </UsersContainer>
             </MiddleWrapper>
             <hr/> 
-            <MiddleWrapper>
-                
+            <MiddleWrapper>  
                 {users?.map((p) => (
                     <UsersContainer key={p._id}>
                     <Avatar src={ p.avatar}/>
@@ -139,12 +148,16 @@ function Users() {
                     </UsersContainer>
                 ))}
             </MiddleWrapper>
+            {data?.isError && <MiddleWrapper><Error>{data.error}</Error></MiddleWrapper>}
         </MiddleContainer>
 
         <BottomContainer>
         </BottomContainer>
         </Wrapper>
     </Container>
+    <ErrorComponent message={data.error}></ErrorComponent>
+    </>
+    
   )
 }
 

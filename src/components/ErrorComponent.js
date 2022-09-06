@@ -2,16 +2,21 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-    position: relative;
+
+    //position: relative;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     display: ${(props) => props.value};
     transition: all 0.5s ease-in-out;
 
-    position: sticky;
-    bottom: 0;
+    /* position: sticky;
+    left: -100vw; */
+    //bottom: 0;
 `
 const Wrapper = styled.div`
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
     width: 100vw;
     height: 50px;
     background-color: #353536;
