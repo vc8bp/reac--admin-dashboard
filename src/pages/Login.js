@@ -120,7 +120,7 @@ function Login(props) {
             <Form autoComplete='on' onSubmit={submit}>
                 <Input type="email" placeholder='Email' onChange={(e)=> setEmail(e.target.value)}></Input>
                 <Input type="password" placeholder='Password' onChange={(e)=> setPassword(e.target.value)} autoComplete="off"></Input>
-                <HelpLink style={{marginLeft:"auto", marginRight:"0" }}><a href={`${process.env.REACT_APP_MAIN_SITE_URL}/forgotpassword`}>Forgot your password?</a></HelpLink>
+                <HelpLink target="_blank" style={{marginLeft:"auto", marginRight:"0" }}><a href={`${process.env.REACT_APP_MAIN_SITE_URL}/forgotpassword`}>Forgot your password?</a></HelpLink>
                 <Button  disabled={isFetching}>Login</Button>
             </Form>
             

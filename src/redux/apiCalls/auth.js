@@ -6,7 +6,7 @@ export const login = async (dispatch, user) => {
     const {email, password} = user;
     dispatch(start());
     try {
-        const res = await publicreq.post("api/auth/login", {email, password});
+        const res = await publicreq.post("api/auth/login", {email, password, forAdmin: true});
         dispatch(loginSuccess(res?.data));
         console.log("LOgin done")
         
