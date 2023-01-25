@@ -11,6 +11,7 @@ import UserPage from "./pages/UserPage";
 import Users from "./pages/Users";
 import { logoutUser } from "./redux/userRedux";
 import jwt_decode from 'jwt-decode'
+import Products from "./pages/Products";
 
 const Container = styled.div`
 display: flex;
@@ -61,6 +62,7 @@ function App() {
           <Route path="/" element={<Home/>}/>
           <Route path="/user" element={<Users/>}/>
           <Route path="/user/:id" element={<UserPage/>}/>
+          <Route path="/products" element={<Products/>}/>
         </Route>
       </Routes>
     </Container>

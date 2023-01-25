@@ -6,4 +6,12 @@ a {
     text-decoration: none;
     color: inherit;
 }
+.container {
+    width: 1200px;
+    max-width: 100%;
+}
+
+div {
+    box-sizing: border-box;
+}
 

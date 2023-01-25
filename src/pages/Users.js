@@ -105,7 +105,7 @@ function Users() {
     console.log()
     useEffect(()=>{
         userisAdmin && fetchUsers(dispatch);  
-        
+
         return () => {
             dispatch(clearUsers())
         }
@@ -123,13 +123,13 @@ function Users() {
         <MiddleContainer>
             <MiddleWrapper>
                     <UsersContainer>
-                    <Avatar style={{color: "black", fontWeight: "600"}}/>
-                    <Name style={{color: "black", fontWeight: "600"}}>Name</Name>
-                    <Email style={{color: "black", fontWeight: "600"}}>Email</Email>
-                    <IsAdmin style={{color: "black", fontWeight: "600"}}>isAdmin</IsAdmin>
-                    <IconContainer style={{color: "black", fontWeight: "600"}}>
-                       Edit
-                    </IconContainer>         
+                        <Avatar style={{color: "black", fontWeight: "600"}}/>
+                        <Name style={{color: "black", fontWeight: "600"}}>Name</Name>
+                        <Email style={{color: "black", fontWeight: "600"}}>Email</Email>
+                        <IsAdmin style={{color: "black", fontWeight: "600"}}>isAdmin</IsAdmin>
+                        <IconContainer style={{color: "black", fontWeight: "600"}}>
+                        Edit
+                        </IconContainer>         
                     </UsersContainer>
             </MiddleWrapper>
             <hr/> 
