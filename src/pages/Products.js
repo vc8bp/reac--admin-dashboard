@@ -1,5 +1,7 @@
-import React from 'react'
+import AddIcon from '@mui/icons-material/Add';
+import {useState, useEffect} from 'react'
 import styled from 'styled-components'
+import { req } from '../axiosReqMethods'
 import ProductsComp from '../components/ProductsComp'
 
 
@@ -54,27 +56,61 @@ const AddProduct = styled.button`
     background-color: teal;
     color: white;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 `
 
+
+
 function Products() {
+    const [products, setProducts] = useState([])
+    const [querie, setquery] = useState()
+    const [url, setURL] = useState()
+    console.log(querie)
+    const handleS = async(e,{type}) => {     
+        // if(type === "cat") url += `&category=${e.target.value}`
+            // if(type === "sort") url += `&sort=${e.target.value}`
+            // if(type === "search") url += `&s=${e.target.value}`
+
+            if(type === "cat") setquery(p => ({...p, category : e.target.value}))
+            if(type === "sort") setquery(p => ({...p, sort : e.target.value}))
+            if(type === "search") setquery(p => ({...p, s : e.target.value})) 
+    }
+
+    useEffect(() => {
+        (async() => {
+            try {
+        
+                let url = `/api/products/allinfo?limit=100&${new URLSearchParams(querie)}`
+                const { data } = await req.get(url)
+                setProducts(data)
+            } catch (error) {
+                console.log(error)
+            }  
+        })()
+    },[querie])
   return (
     <Container>
         <Wrapper>
             <Title>Products</Title>
             <FilterSection>
-                <SearchProduct placeholder='Search by product name'></SearchProduct>
-                <Sections>
+                <SearchProduct placeholder='Search by product name' onChange={(e) => handleS(e, {type: "search"})}></SearchProduct>
+                <Sections onChange={(e) => handleS(e, {type: "cat"})}>
+                    <Options value="" default>category</Options>
                     <Options>jewelery</Options>
                     <Options>clotiong</Options>
                     <Options>bottom</Options>
                 </Sections>
-                <Sections>
-                    <Options>Low to high</Options>
-                    <Options>High to low</Options>
+                <Sections onChange={(e) => handleS(e, {type: "sort"})}>
+                    <Options value="" default>Price sort</Options>
+                    <Options value="price-asc">Low to high</Options>
+                    <Options value="price-desc">High to low</Options>
                 </Sections>
-                <AddProduct>Add Product</AddProduct>
+                <AddProduct><AddIcon/>  Add Product</AddProduct>
             </FilterSection>
-            <ProductsComp/>
+            <ProductsComp products={products} />
         </Wrapper>
 
     </Container>
