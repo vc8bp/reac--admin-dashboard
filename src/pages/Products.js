@@ -67,22 +67,16 @@ const AddProduct = styled.button`
 function Products() {
     const [products, setProducts] = useState([])
     const [querie, setquery] = useState()
-    const [url, setURL] = useState()
-    console.log(querie)
+    
     const handleS = async(e,{type}) => {     
-        // if(type === "cat") url += `&category=${e.target.value}`
-            // if(type === "sort") url += `&sort=${e.target.value}`
-            // if(type === "search") url += `&s=${e.target.value}`
-
-            if(type === "cat") setquery(p => ({...p, category : e.target.value}))
-            if(type === "sort") setquery(p => ({...p, sort : e.target.value}))
-            if(type === "search") setquery(p => ({...p, s : e.target.value})) 
+        if(type === "cat") setquery(p => ({...p, category : e.target.value}))
+        if(type === "sort") setquery(p => ({...p, sort : e.target.value}))
+        if(type === "search") setquery(p => ({...p, s : e.target.value})) 
     }
 
     useEffect(() => {
         (async() => {
-            try {
-        
+            try {     
                 let url = `/api/products/allinfo?limit=100&${new URLSearchParams(querie)}`
                 const { data } = await req.get(url)
                 setProducts(data)
