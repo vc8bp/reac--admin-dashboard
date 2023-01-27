@@ -7,11 +7,11 @@ import Navbar from "./components/Navbar";
 import SlideBar from "./components/SlideBar";
 import styled from "styled-components";
 import UserPage from "./pages/UserPage";
-
 import Users from "./pages/Users";
 import { logoutUser } from "./redux/userRedux";
 import jwt_decode from 'jwt-decode'
 import Products from "./pages/Products";
+import { useState } from "react";
 
 const Container = styled.div`
 display: flex;
@@ -48,11 +48,12 @@ function PrivateRoute() {
 function App() {
   const user = useSelector(state => state.user.currentUser)
   
+  const [isSlideBarOpen, setisSlideBarOpen] = useState(true)
   return (
     <>
-    {user && <Navbar/>}
+    {user && <Navbar setSideBar={setisSlideBarOpen} isOpen={isSlideBarOpen}/>}
     <Container>
-      {user && <SlideBar/>}
+      {user && <SlideBar isOpen={isSlideBarOpen}/>}
       <Routes>  
         <Route element={<IsLogedin/>} >
           <Route path="/login" element={<Login/>}/>

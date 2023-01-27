@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/userRedux';
 import { Link } from 'react-router-dom';
+import MenuOpenOutlinedIcon from '@mui/icons-material/MenuOpenOutlined';
 
 const NavbarContainer = styled.div`
     width: 100%;
@@ -13,6 +14,10 @@ const NavbarContainer = styled.div`
     z-index: 999;
     box-shadow: 0 3px 2px -1px rgba(0,0,0,.1);
     background-color: rgba(255,255,255,.8);
+
+    >* svg {
+        cursor: pointer;
+    }
 `
 const NavbarWrapper = styled.div`
     height: 100%;
@@ -26,31 +31,24 @@ const Logo = styled.span`
     font-size: 30px;
     cursor: pointer;
 `
-const TopLeft = styled.div``
+const TopLeft = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    > svg {
+        //transform: ${p => p.isOpen ? "rotate(0)" : "rotate(180deg);"};
+        transition: transform 0.1s ease-in-out;    
+        transform: ${p => p.isOpen ? "rotatey(0)" : "rotatey(180deg);"};
+
+    }
+    
+`
+
+
 const TopRight = styled.div`
     display: flex;
     align-items: center;
-`
-
-const IconContainer = styled.div`
-    position: relative;
-    cursor: pointer;
-    margin-right: 10px;
-    color: #555;
-`
-const IconBadge = styled.span`
-    width: 15px;
-    height: 15px;
-    position: absolute;
-    top: -5px;
-    right: 0px;
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
 `
 
 const Auth = styled.p`
@@ -62,8 +60,7 @@ const Avatar = styled.img`
     border-radius: 50%;
 `
 
-const Navbar = () => {
-
+const Navbar = ({setSideBar, isOpen}) => {
     const user = useSelector(state => state.user.currentUser)
     const dispatch = useDispatch();
 
@@ -78,7 +75,8 @@ const Navbar = () => {
     return (
         <NavbarContainer>
             <NavbarWrapper>
-                <TopLeft>
+                <TopLeft isOpen={isOpen}>
+                    <MenuOpenOutlinedIcon onClick={() => setSideBar(p => !p)} />
                     <Logo><Link to="/">vc8bp</Link></Logo>
                 </TopLeft>
                 <TopRight>

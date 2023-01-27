@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 
 const HomeComponent = styled.div`
-  flex: 5;
   width: 100%;
   display: flex;
   padding: 20px;

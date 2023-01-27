@@ -1,21 +1,19 @@
 import React from 'react'
-import { LineStyle, Timeline, TrendingUp, PermIdentity, Storefront, LocalAtm, Assessment, Drafts, Feedback, Forum, Work, Receipt, PieChart } from "@material-ui/icons";
+import { LineStyle, Timeline, TrendingUp, PermIdentity, Storefront, LocalAtm, Drafts, Feedback, Forum, PieChart } from "@material-ui/icons";
 import styled, { css } from "styled-components";
 import { Link} from 'react-router-dom';
 
 
 
 const SidebarContainer = styled.div`
-    flex: 1;
+    position: fixed; 
+    top: 50px;
+    bottom: 0;
+    left: ${props => props.isOpen ? "0%" : "-100%"};
     height: calc(100vh - 50px);
     background-color: rgb(251, 251, 255);
-    position: sticky;
-    top: 50px;
     width: max-content;
-
-    @media (max-width: 700px) {
-        display: none;
-    }
+    transition: all 0.3s ease-in-out ;
     
 `
 const SidebarWrapper = styled.div`
@@ -49,11 +47,11 @@ const SidebarListItem = styled.li`
     }
 `
 
-const SlideBar = () => {
-
+const SlideBar = (props) => {
+    
 
     return (
-        <SidebarContainer>
+        <SidebarContainer isOpen={props.isOpen}>
             <SidebarWrapper>
                 <SidebarMenu>
                     <SidebarTitle>Dashboard</SidebarTitle>
