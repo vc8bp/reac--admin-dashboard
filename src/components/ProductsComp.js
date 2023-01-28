@@ -6,14 +6,19 @@ import styled from 'styled-components'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import Confirmation from './Confirmation';
 import ProductNotFound from './ProductNotFound';
+import EditProduct from './EditProducts';
 
-const Table = styled.table`
-    margin-top: 20px;
-    width: 1200px;
+const TableWrapper = styled.div`
+    margin-top: 20px;   
+    overflow: auto;
     border: 1px solid #d5d6d7;
-    border-collapse: collapse;
-    overflow: hidden;
     border-radius: 1vmin;
+`
+const Table = styled.table`
+    width: 100%; 
+    min-width: 1000px;   
+    border-collapse: collapse;  
+    overflow: auto  ;
 `
 const Thead = styled.thead`
     background-color: teal;
@@ -70,20 +75,30 @@ const Image = styled.img`
 
 function ProductsComp(props) {
 
-    const [isOpen, setIsOpen] = useState(false)
+    const [DeleteisOpen, setDeleteIsOpen] = useState(false)
     const [DeleteProduct, setDeleteProduct] = useState("")
 
     const HandleDelete = (product) => {
         setDeleteProduct(product)
-        setIsOpen(true)
+        setDeleteIsOpen(true)
     }
     const DeleProduct = async () => {
         console.log("yes delete it")
+        setDeleteIsOpen(false)
     }
+
+
+    //Edit
+    const [EditIsOpen, setEditIsOpen] = useState();
+
 
   return (
     <>
-        {props.products.length ? <Table>
+    
+
+    
+        {props.products.length ? <TableWrapper>
+             <Table>
             <Thead>
                 <tr> 
                     <Td>PRO NO.</Td>
@@ -117,20 +132,22 @@ function ProductsComp(props) {
                         <Td>DETAILS</Td>
                         <Td>
                             <div>
-                                <RemoveRedEyeOutlinedIcon/><EditIcon/><DeleteIcon onClick={() => HandleDelete(p)} />
+                                <RemoveRedEyeOutlinedIcon/><EditIcon onClick={() => setEditIsOpen(true)} /><DeleteIcon onClick={() => HandleDelete(p)} />
                             </div>
                         </Td>
                     </Tr>
                 })}
             </Tbody>
-        </Table> : <ProductNotFound/>}
+        </Table> 
+        </TableWrapper>: <ProductNotFound/>}
 
-        <Confirmation isOpen={isOpen} setIsOpen={setIsOpen} action={DeleProduct} >
+        <Confirmation isOpen={DeleteisOpen} setIsOpen={setDeleteIsOpen} action={DeleProduct} >
             <div style={{display: "flex", flexDirection:"column", textAlign: "center", gap: "0.5rem"}} >
                 <b>Are You Sure! Want to Delete <span style={{color: "red"}}>{DeleteProduct.title}</span> Record?</b>
                 <span>Do you really want to delete these records? You can't view this in your list anymore if you delete!</span>
             </div>
         </Confirmation>
+        <EditProduct isOpen={EditIsOpen} setIsOpen={setEditIsOpen} />
     </>
   )
 }

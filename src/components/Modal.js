@@ -17,7 +17,6 @@ const Container = styled.div`
 `
 
 function Modal({children, isOpen, }) { 
-  console.log(isOpen)
   return (
     <Container isOpen={isOpen}>
         {children}

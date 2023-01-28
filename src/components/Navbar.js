@@ -11,7 +11,7 @@ const NavbarContainer = styled.div`
     background-color: #fff;
     position: sticky;
     top: 0;
-    z-index: 999;
+    z-index: 50;
     box-shadow: 0 3px 2px -1px rgba(0,0,0,.1);
     background-color: rgba(255,255,255,.8);
 
