@@ -70,6 +70,8 @@ const Middle = styled.div`
     height: calc(100vh - 170px);
     overflow: auto;
     padding: 0 1.4rem;
+
+
     /* ===== Scrollbar CSS ===== */
     /* Firefox */
     scrollbar-width: auto;
@@ -135,11 +137,6 @@ const SubmitBtn = styled.button`
 
 
 function EditModal({children, isOpen, setIsOpen, title, desc}) {
-
-    useEffect(() => { //to prevent body scrolling while modal is open
-        if(isOpen) document.body.style.overflow = 'hidden';
-        if(!isOpen) document.body.style.overflow = 'scroll';
-     }, [isOpen]);
 
   return ReactDOM.createPortal(
     <>

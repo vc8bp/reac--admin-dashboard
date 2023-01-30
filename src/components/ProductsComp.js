@@ -90,8 +90,12 @@ function ProductsComp(props) {
 
     //Edit
     const [EditIsOpen, setEditIsOpen] = useState();
+    const [EditProductInfo, setEditProductInfo] = useState();
 
-
+    const HandleEdit = (product) => {
+        setEditIsOpen(true) 
+        setEditProductInfo(product)
+    }
   return (
     <>
     
@@ -132,7 +136,7 @@ function ProductsComp(props) {
                         <Td>DETAILS</Td>
                         <Td>
                             <div>
-                                <RemoveRedEyeOutlinedIcon/><EditIcon onClick={() => setEditIsOpen(true)} /><DeleteIcon onClick={() => HandleDelete(p)} />
+                                <RemoveRedEyeOutlinedIcon/><EditIcon onClick={() => HandleEdit(p)} /><DeleteIcon onClick={() => HandleDelete(p)} />
                             </div>
                         </Td>
                     </Tr>
@@ -147,7 +151,7 @@ function ProductsComp(props) {
                 <span>Do you really want to delete these records? You can't view this in your list anymore if you delete!</span>
             </div>
         </Confirmation>
-        <EditProduct isOpen={EditIsOpen} setIsOpen={setEditIsOpen} />
+        <EditProduct isOpen={EditIsOpen} setIsOpen={setEditIsOpen} EditProductInfo={EditProductInfo} />
     </>
   )
 }

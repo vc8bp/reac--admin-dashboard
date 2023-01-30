@@ -58,6 +58,7 @@ const UsersContainer = styled.div`
     margin: 10px;
     display: flex;
     align-items: center;
+    margin: 50px 0;
 `
 const Avatar = styled.img`
     width: 30px;

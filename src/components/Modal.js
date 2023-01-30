@@ -31,11 +31,6 @@ const Container = styled.div`
 
 function Modal({children, isOpen, }) { 
 
-  useEffect(() => { //to prevent body scrolling while modal is open
-    if(isOpen) document.body.style.overflow = 'hidden';
-    if(!isOpen) document.body.style.overflow = 'unset';
-  }, [isOpen]);
-
   return ReactDOM.createPortal(
     <>
       {isOpen && <BackDrop/>}
