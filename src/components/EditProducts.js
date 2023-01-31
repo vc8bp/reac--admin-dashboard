@@ -3,6 +3,10 @@ import EditModal from './EditModal'
 import styled from 'styled-components'
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { useDispatch } from 'react-redux';
+import { addProducts, editProduct } from '../redux/Products';
+import { addProductapi, editProductapi } from '../redux/apiCalls/productsApis';
+
 
 const Container = styled.div`
   margin: 1rem 0;
@@ -114,12 +118,15 @@ const Tag = styled.div`
 
 `
 
-function EditProducts({isOpen, setIsOpen, EditProductInfo}) {
-  const [Product, setProduct] = useState({})
+function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
+  const DefaultValues = {title: "", productno: "", size: [], color: [], desc: "",categories: [], quantity: "", price: ""}
+  
+  const dispatch = useDispatch();
+  const [Product, setProduct] = useState(DefaultValues)
 
   useEffect(() => {
+    if(!EditProductInfo) return 
     setProduct({...EditProductInfo})
-    return () => setProduct({})
   }, [EditProductInfo])
 
   const handleChange = (e, type) => {
@@ -127,14 +134,44 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo}) {
     const property = type || name
     
     const prev = Product[property]; //we ddnt used Product.property bcz iw will find a field where the key is property but in this cal it will find the value of property
-    setProduct((p) => ({...p, [property] : Array.isArray(prev) ? [...prev, value] : value})) //if it's array then append or setValue
+    if(Array.isArray(prev)) {
+      const exist = prev.filter(i => i == value.toUpperCase())
+      if(exist?.length) return //TODO: add Errors
+      
+    }
+    setProduct((p) => ({...p, [property] : Array.isArray(prev) ? [...prev, value.toUpperCase()] : value})) //if it's array then append or setValue
+
     e.target.value = "";
+  }
+
+  const handleSubmit = () => {
+    console.log(editProduct)
+    if(!EditProductInfo) {
+      console.log("editProduct")
+      addProductapi(dispatch, Product)
+    } else {
+      console.log("no editProduct")
+      editProductapi(dispatch,Product)
+    }
+    
+    setIsOpen(false)
+  }
+  //console.log(Product?.size?.includes("Ll"))
+  const handleSizeDelete = (size) => {
+
+    setProduct(p => ({...p, size: p.size.filter(i => i!==size)}))
+  }
+  const handleColorDelete = (color) => {
+    
+  }
+  const handleCategoriesDelete = (cat) => {
+    
   }
 
 
   return (
-    <EditModal isOpen={isOpen} setIsOpen={setIsOpen} title="Update Product" desc="Updated your product and necessary information from here">
-        <Container>
+    <EditModal isOpen={isOpen} setIsOpen={setIsOpen} action={handleSubmit} title={title} desc={desc}>
+              <Container>
           <Section>
             <Left>
               <Lable>Product Image</Lable>
@@ -148,14 +185,14 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo}) {
             </Right>
           </Section>
 
-          <Section>
+           <Section>
             <Left><Lable>Product Name/Title</Lable></Left>
-            <Right><Input name="title" value={Product?.title} onChange={e => handleChange(e)}/></Right>
+            <Right><Input name="title" value={Product.title} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
             <Left><Lable>Product Number</Lable></Left>
-            <Right><Input name="productno" value={Product?.productno} onChange={e => handleChange(e)}/></Right>
+            <Right><Input name="productno" value={Product.productno} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
@@ -164,7 +201,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo}) {
               <TagSection>
                 {Product?.size?.map((s) => {
                   return <Tag key={s}>
-                  <span>{s}</span><div><CloseOutlinedIcon/></div>
+                  <span>{s}</span><div onClick={() =>handleSizeDelete(s)}><CloseOutlinedIcon/></div>
                 </Tag>
                 })}
                 <Input placeholder='Sizes (Write and press Enter)'  name="size" onKeyDown={e => {if(e.key==="Enter") handleChange(e, "size")}}/>
@@ -178,7 +215,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo}) {
               <TagSection>
                 {Product?.color?.map((s) => {
                   return <Tag key={s} color={s}>
-                  <span >{s}</span><div><CloseOutlinedIcon/></div>
+                  <span >{s}</span><div onClick={() =>handleColorDelete(s)}><CloseOutlinedIcon/></div>
                 </Tag>
                 })}
                 <Input style={{height: "80px"}} type="color" placeholder='Sizes (Write and press Enter)' name="color" onKeyDown={e => {if(e.key==="Enter") handleChange(e, "color")}}/>
@@ -188,7 +225,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo}) {
 
           <Section>
             <Left><Lable>Product Description</Lable></Left>
-            <Right><Textarea name="desc" value={Product?.desc} onChange={e => handleChange(e)}/></Right>
+            <Right><Textarea name="desc" value={Product.desc || ""} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
@@ -197,7 +234,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo}) {
               <TagSection>
                 {Product?.categories?.map((s) => {
                   return <Tag key={s}>
-                  <span>{s}</span><div><CloseOutlinedIcon/></div>
+                  <span>{s}</span><div onClick={() => handleCategoriesDelete(s)}><CloseOutlinedIcon/></div>
                 </Tag>
                 })}
                 <Input placeholder='Categories (Write and press Enter)' name="categories" onKeyDown={e => {if(e.key==="Enter") handleChange(e, "categories")}}/>
@@ -207,12 +244,12 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo}) {
 
           <Section>
             <Left><Lable>Product Quantity</Lable></Left>
-            <Right><Input name="quantity" value={Product?.quantity} onKeyDown={e => handleChange(e)}/></Right>
+            <Right><Input name="quantity" value={Product.quantity} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
             <Left><Lable>Product Price</Lable></Left>
-            <Right><Input name="price" value={Product?.price} onChange={e => handleChange(e)}/></Right>
+            <Right><Input name="price" value={Product.price} onChange={e => handleChange(e)}/></Right>
           </Section>
           
         </Container>

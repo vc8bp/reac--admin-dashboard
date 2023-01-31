@@ -3,6 +3,9 @@ import {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { req } from '../axiosReqMethods'
 import ProductsComp from '../components/ProductsComp'
+import { setProducts } from '../redux/Products'
+import { useDispatch, useSelector } from 'react-redux';
+import EditProduct from '../components/EditProducts';
 
 
 const Container = styled.div`
@@ -65,12 +68,17 @@ const AddProduct = styled.button`
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    :hover {
+        background-color: #02a8a8;
+    }
 `
 
 
 
 function Products() {
-    const [products, setProducts] = useState([])
+    //const [products, setProducts] = useState([])
+    const dispatch = useDispatch()
+    const products = useSelector(p => p.Products.products)
     const [querie, setquery] = useState()
 
     const handleS = async(e,{type}) => {     
@@ -84,12 +92,17 @@ function Products() {
             try {     
                 let url = `/api/products/allinfo?limit=100&${new URLSearchParams(querie)}`
                 const { data } = await req.get(url)
-                setProducts(data)
+                dispatch(setProducts(data))
             } catch (error) {
                 console.log(error)
             }  
         })()
     },[querie])
+
+
+    //add product
+    const [EditIsOpen, setEditIsOpen] = useState(false)
+    
   return (
     <Container>
         <Title>Products</Title>
@@ -108,11 +121,11 @@ function Products() {
                     <Options value="price-asc">Low to high</Options>
                     <Options value="price-desc">High to low</Options>
                 </Sections>
-                <AddProduct><AddIcon/>  Add Product</AddProduct>
+                <AddProduct onClick={() => setEditIsOpen(true)}><AddIcon/>  Add Product</AddProduct>
             </FilterSection>
-            <ProductsComp products={products} />
+            <ProductsComp />
         </Wrapper>
-
+        <EditProduct isOpen={EditIsOpen} setIsOpen={setEditIsOpen} editProduct={false} title="Add Product" desc="Add your product's information from here"/>
     </Container>
   )
 }

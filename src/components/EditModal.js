@@ -60,6 +60,9 @@ const Top = styled.div`
         border-radius: 50%;
         cursor: pointer;
         box-shadow:0px 0px 30px rgba(0, 0, 0, 0.17);
+        :hover {
+            background-color: #ffeceb;
+        }
 
         > svg {
             color: red;
@@ -136,7 +139,7 @@ const SubmitBtn = styled.button`
 
 
 
-function EditModal({children, isOpen, setIsOpen, title, desc}) {
+function EditModal({children, isOpen, setIsOpen, title, desc, action}) {
 
   return ReactDOM.createPortal(
     <>
@@ -152,7 +155,7 @@ function EditModal({children, isOpen, setIsOpen, title, desc}) {
             </Middle>
             <Bottom>
                 <CancelBtn>Cancel</CancelBtn>
-                <SubmitBtn>{title}</SubmitBtn>
+                <SubmitBtn onClick={action} >{title}</SubmitBtn>
             </Bottom>
             
         </Container>

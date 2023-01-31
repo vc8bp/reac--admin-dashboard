@@ -48,7 +48,7 @@ function PrivateRoute() {
 function App() {
   const user = useSelector(state => state.user.currentUser)
   
-  const [isSlideBarOpen, setisSlideBarOpen] = useState(true)
+  const [isSlideBarOpen, setisSlideBarOpen] = useState(false)
   return (
     <>
     {user && <Navbar setSideBar={setisSlideBarOpen} isOpen={isSlideBarOpen}/>}

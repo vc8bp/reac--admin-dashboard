@@ -7,6 +7,7 @@ import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import Confirmation from './Confirmation';
 import ProductNotFound from './ProductNotFound';
 import EditProduct from './EditProducts';
+import { useSelector } from 'react-redux';
 
 const TableWrapper = styled.div`
     margin-top: 20px;   
@@ -73,7 +74,8 @@ const Image = styled.img`
 //cornfirmation style
 
 
-function ProductsComp(props) {
+function ProductsComp() {
+    const products = useSelector(p => p.Products.products)
 
     const [DeleteisOpen, setDeleteIsOpen] = useState(false)
     const [DeleteProduct, setDeleteProduct] = useState("")
@@ -101,7 +103,7 @@ function ProductsComp(props) {
     
 
     
-        {props.products.length ? <TableWrapper>
+        {products?.length ? <TableWrapper>
              <Table>
             <Thead>
                 <tr> 
@@ -115,24 +117,24 @@ function ProductsComp(props) {
                 </tr>
             </Thead>
             <Tbody>
-                {props.products.map((p) => {
-                    return <Tr key={p._id}>
+                {products?.map((p) => {
+                    return <Tr key={p?._id}>
                         
                         <Td>
                             <div>
-                            <ContentCopyIcon onClick={() => navigator.clipboard.writeText(p._id)}/>
-                            {p.productno}                          
+                            <ContentCopyIcon onClick={() => navigator.clipboard.writeText(p?._id)}/>
+                            {p?.productno}                          
                             </div>
                         </Td>
                         <Td>
                             <div>
                                 <Image src={p.img} />
-                                {p.title.length > 50 ? `${p.title.slice(0, 50)}...` : p.title}
+                                {p?.title?.length > 50 ? `${p.title.slice(0, 50)}...` : p?.title}
                             </div>
                         </Td>
-                        <Td>{p.categories[0]}</Td>
-                        <Td>{p.price}</Td>
-                        <Td>{JSON.stringify(p.inStock)}</Td>
+                        <Td>{p?.categories ? p?.categories[0] : ""}</Td>
+                        <Td>{p?.price}</Td>
+                        <Td>{p?.quantity}</Td>
                         <Td>DETAILS</Td>
                         <Td>
                             <div>
@@ -151,7 +153,7 @@ function ProductsComp(props) {
                 <span>Do you really want to delete these records? You can't view this in your list anymore if you delete!</span>
             </div>
         </Confirmation>
-        <EditProduct isOpen={EditIsOpen} setIsOpen={setEditIsOpen} EditProductInfo={EditProductInfo} />
+        <EditProduct isOpen={EditIsOpen} setIsOpen={setEditIsOpen} EditProductInfo={EditProductInfo} title="Update Product" desc="Updated your product and necessary information from here"/>
     </>
   )
 }

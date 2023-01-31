@@ -13,7 +13,6 @@ function getAccessToken() {
 
 export const req = axios.create({
     baseURL,
-    //headers : {token: `Bearer ${getToken()}`},
 });
  
 export const publicreq = axios.create({
