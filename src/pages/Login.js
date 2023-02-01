@@ -4,7 +4,6 @@ import { mobile } from '../Responsive'
 import { Link } from 'react-router-dom'
 import { login } from '../redux/apiCalls/auth.js'
 import { useDispatch, useSelector } from 'react-redux'
-import ErrorComponent from '../components/ErrorComponent'
 
 //import { resetError } from '../redux/userRedux'
 
@@ -97,14 +96,13 @@ function Login(props) {
   const user = useSelector(state => state.user.currentUser) //is logedin user?
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isFetching, error} = useSelector(state => state.user)
+  const { isFetching } = useSelector(state => state.user)
 
   const dispatch = useDispatch()
 
   
 
-  const submit = async (e) => {
-    
+  const submit = async (e) => { 
     e.preventDefault();
     console.table(email, password)
     
@@ -131,7 +129,6 @@ function Login(props) {
         </Wrapper>
         
     </Container>
-    <ErrorComponent message={error?.error}/>
     </>
   )
 }

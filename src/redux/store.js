@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from './userRedux'
 import Products from "./Products";
 import UseersComponentRedux from "./UseersComponentRedux";
+import MessageRedux from "./MessageRedux";
 import {
     persistStore,
     persistReducer,
@@ -26,7 +27,8 @@ export const store = configureStore({
     reducer:{
         user: persistedReducer,
         users: UseersComponentRedux,
-        Products : Products
+        Products : Products,
+        error : MessageRedux,
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

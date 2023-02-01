@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { fetchUsers } from '../redux/apiCalls/users'
 import { Link } from 'react-router-dom'
 import { clearUsers } from '../redux/UseersComponentRedux'
-import ErrorComponent from '../components/ErrorComponent'
 
 
 
@@ -159,7 +158,6 @@ function Users() {
         </BottomContainer>
         </Wrapper>
     </Container>
-    <ErrorComponent message={data.error}></ErrorComponent>
     </>
     
   )

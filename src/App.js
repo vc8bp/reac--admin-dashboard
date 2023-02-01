@@ -12,11 +12,13 @@ import { logoutUser } from "./redux/userRedux";
 import jwt_decode from 'jwt-decode'
 import Products from "./pages/Products";
 import { useState } from "react";
+import MessageComponent from "./components/MesageComponent";
 
 const Container = styled.div`
-display: flex;
+/* display: flex;
 flex-direction: row;
-justify-content: center;
+justify-content: center; */
+height: 100vh;
 `
 
 function IsLogedin() {
@@ -65,8 +67,10 @@ function App() {
           <Route path="/user/:id" element={<UserPage/>}/>
           <Route path="/products" element={<Products/>}/>
         </Route>
-      </Routes>
+      </Routes>    
+      <MessageComponent/>
     </Container>
+    
     </>
   );
 }
