@@ -1,11 +1,12 @@
 import { Delete, Edit } from '@material-ui/icons'
-import React from 'react'
+import React, {useState} from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { fetchUsers } from '../redux/apiCalls/users'
 import { Link } from 'react-router-dom'
 import { clearUsers } from '../redux/UseersComponentRedux'
+import EditUser from '../components/EditUser'
 
 
 
@@ -13,9 +14,9 @@ const Container = styled.div`
     width: 100%;
     height: fit-content;
     overflow: hidden;
+    margin: auto;   
     padding: 20px;
     border-radius: 1vmax;
-    margin: 20px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
     background-color: #f6fbfb;
     width: 1200px;
@@ -25,6 +26,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
     
 
@@ -57,7 +59,6 @@ const UsersContainer = styled.div`
     margin: 10px;
     display: flex;
     align-items: center;
-    margin: 50px 0;
 `
 const Avatar = styled.img`
     width: 30px;
@@ -115,6 +116,13 @@ function Users() {
     },[userisAdmin])
 
 
+    //edit user
+    const [isOpen, setIsOpen] = useState()
+
+    const handleEdit = () => {
+        console.log("i am action")
+    }
+
   return ( <>
     <Container>
         <Wrapper>
@@ -144,7 +152,7 @@ function Users() {
                     <Email>{p.email}</Email>
                     <IsAdmin value = {p.isAdmin} >{JSON.stringify(p.isAdmin)}</IsAdmin>
                     <IconContainer>
-                        <Link to={`/user/${p._id}`}><Edit/></Link>
+                        <Edit onClick={() => setIsOpen(true)} />
                         <Delete/>
                     </IconContainer>
                         
@@ -158,6 +166,7 @@ function Users() {
         </BottomContainer>
         </Wrapper>
     </Container>
+    <EditUser isOpen={isOpen} setIsOpen={setIsOpen} action={handleEdit} title="Edit user" desc=""/>
     </>
     
   )

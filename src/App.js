@@ -1,5 +1,5 @@
 import Home from "./pages/Home";
-import {Navigate, Route, Routes, Outlet} from "react-router-dom"
+import {Navigate, Route, Routes, Outlet, useLocation} from "react-router-dom"
 import './App.css'
 import Login from "./pages/Login";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import jwt_decode from 'jwt-decode'
 import Products from "./pages/Products";
 import { useState } from "react";
 import MessageComponent from "./components/MesageComponent";
+import { useEffect } from "react";
 
 const Container = styled.div`
 /* display: flex;
@@ -49,8 +50,13 @@ function PrivateRoute() {
 
 function App() {
   const user = useSelector(state => state.user.currentUser)
-  
   const [isSlideBarOpen, setisSlideBarOpen] = useState(false)
+
+  const location = useLocation()
+  useEffect(() => {
+    setisSlideBarOpen(false)
+  },[location.pathname])
+  
   return (
     <>
     {user && <Navbar setSideBar={setisSlideBarOpen} isOpen={isSlideBarOpen}/>}

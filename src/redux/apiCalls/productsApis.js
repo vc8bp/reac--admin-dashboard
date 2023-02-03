@@ -7,7 +7,7 @@ export const editProductapi = async (dispatch, product) => {
     try {
         const res = await req.put(`/api/products/${product._id}`, product);
         dispatch(editProduct(res?.data))
-        dispatch(setError(res.data.message))
+        dispatch(setError("product updated successfully"))
     } catch (error) {
         dispatch(setError(error.responce.data.message))
         console.log(error)
