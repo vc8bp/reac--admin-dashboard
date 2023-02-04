@@ -9,10 +9,10 @@ import {
 
 
 
-export const fetchUsers = async (dispatch) => {
+export const fetchUsers = async (dispatch, querie) => {
   dispatch(fetchStart());
   try {  
-    const users = await req.get("/api/users/allinfo");
+    const users = await req.get(`/api/users/allinfo?${new URLSearchParams(querie)}`);
     dispatch(fetchSuccess(users?.data));
   } catch (error) { 
       dispatch(fetchFailed(error.response?.data));

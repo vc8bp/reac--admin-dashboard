@@ -1,174 +1,109 @@
-import { Delete, Edit } from '@material-ui/icons'
-import React, {useState} from 'react'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import AddIcon from '@mui/icons-material/Add';
+import {useState, useEffect} from 'react'
 import styled from 'styled-components'
-import { fetchUsers } from '../redux/apiCalls/users'
-import { Link } from 'react-router-dom'
-import { clearUsers } from '../redux/UseersComponentRedux'
-import EditUser from '../components/EditUser'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsers } from '../redux/apiCalls/users';
+import EditUser from '../components/EditUser';
+import UsersTableComp from '../components/UsersTableComp';
+import { clearUsers } from '../redux/UseersComponentRedux';
 
 
 
 const Container = styled.div`
+
     width: 100%;
-    height: fit-content;
-    overflow: hidden;
-    margin: auto;   
-    padding: 20px;
-    border-radius: 1vmax;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
-    background-color: #f6fbfb;
-    width: 1200px;
-    max-width: 90%;
-   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F4F5F7;
+    box-sizing: border-box;
 `
 const Wrapper = styled.div`
+    width: 1200px;
+    max-width: 90%;
+`
+const Title = styled.h1`
+    font-size: 1.25rem;
+`
+const FilterSection = styled.div`
+    max-width: 100%;
+    display: flex;
+    padding: 1.5rem 1rem;
+    background-color: white;
+    box-sizing: border-box;
+    gap: 0.5rem;
+    border-radius: 1vmin;
+
+    @media (max-width: 650px) {
+        flex-direction: column;
+    }
+
+    > * {
+        background-color: #F4F5F7;
+        border: #F4F5F7 1px solid;
+        border-radius: 1vmin;
+        padding: 1rem 0.8rem; 
+    }
+
+    > *:focus {
+        background-color: white;
+    }
+`
+const SearchProduct = styled.input`
+    padding: 0.7rem 0.5rem;
+    outline: none;
+    flex: 3;   
+`
+
+const Search = styled.button`
+    flex: 1;
+    background-color: teal;
+    color: white;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    
-
-`
-const TopContainer = styled.div`
-    padding: 0px 5px;
-    height: 40px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`
-const Title = styled.div`
-    font-size: 2rem;
-    font-weight: 300;
-`
-const TotalUsers = styled.div`
-    font-size: 2rem;
-    font-weight: 300;
+    gap: 0.5rem;
+    :hover {
+        background-color: #02a8a8;
+    }
 `
 
-const MiddleContainer = styled.div`
-    width: 100%;
-    overflow-y: auto;
-`
-const MiddleWrapper = styled.div`
-    min-width: 620px;
-`
-const UsersContainer = styled.div`
-    margin: 10px;
-    display: flex;
-    align-items: center;
-`
-const Avatar = styled.img`
-    width: 30px;
-    border-radius: 50%;
-    margin-right: 5px;
-    
-`
 
-const Name = styled.div`
-    margin: 0px 5px;
-    flex: 1;
-    font-weight: 600;
-`
-const Email = styled.div`
-    margin: 0px 5px;
-    flex: 1;
-`
-const IsAdmin = styled.div`
-    margin: 0px 5px;
-    flex: 1;
-    text-align: center;
-    color: ${props => props.value === true ? "green" : "red"};
-`
-const IconContainer = styled.div`
-    flex: 0.5;
-    display: flex;
-    justify-content: space-between;
-`
-
-const BottomContainer = styled.div`
-
-`
-
-const Error = styled.span`
-    color: red;
-    font-size: 20px;
-    font-weight: 400;
-    
-`
 
 function Users() {
-    const data = useSelector(state => state.users);
-    const users = data.fetchedUsers;
-    const userisAdmin = useSelector(state => state.user?.currentUser?.isAdmin);
-    console.log(data)
-
     const dispatch = useDispatch()
-    console.log()
+    const [querie, setquery] = useState()
+
+    const handleS = async(e,{type}) => {     
+        if(type === "search") setquery(p => ({...p, s : e.target.value})) 
+    }
+
     useEffect(()=>{
-        userisAdmin && fetchUsers(dispatch);  
+        fetchUsers(dispatch, querie);  
 
         return () => {
             dispatch(clearUsers())
         }
-    },[userisAdmin])
+    },[])
 
 
-    //edit user
-    const [isOpen, setIsOpen] = useState()
-
-    const handleEdit = () => {
-        console.log("i am action")
-    }
-
-  return ( <>
-    <Container>
-        <Wrapper>
-        <TopContainer>
-            <Title>User</Title>
-            <TotalUsers>total : {users?.length}</TotalUsers>
-        </TopContainer>
-
-        <MiddleContainer>
-            <MiddleWrapper>
-                    <UsersContainer>
-                        <Avatar style={{color: "black", fontWeight: "600"}}/>
-                        <Name style={{color: "black", fontWeight: "600"}}>Name</Name>
-                        <Email style={{color: "black", fontWeight: "600"}}>Email</Email>
-                        <IsAdmin style={{color: "black", fontWeight: "600"}}>isAdmin</IsAdmin>
-                        <IconContainer style={{color: "black", fontWeight: "600"}}>
-                        Edit
-                        </IconContainer>         
-                    </UsersContainer>
-            </MiddleWrapper>
-            <hr/> 
-            <MiddleWrapper>  
-                {users?.map((p) => (
-                    <UsersContainer key={p._id}>
-                    <Avatar src={ p.avatar}/>
-                    <Name>{`${p.firstName} ${p.lastName}`}</Name>
-                    <Email>{p.email}</Email>
-                    <IsAdmin value = {p.isAdmin} >{JSON.stringify(p.isAdmin)}</IsAdmin>
-                    <IconContainer>
-                        <Edit onClick={() => setIsOpen(true)} />
-                        <Delete/>
-                    </IconContainer>
-                        
-                    </UsersContainer>
-                ))}
-            </MiddleWrapper>
-            {data?.isError && <MiddleWrapper><Error>{data.error}</Error></MiddleWrapper>}
-        </MiddleContainer>
-
-        <BottomContainer>
-        </BottomContainer>
-        </Wrapper>
-    </Container>
-    <EditUser isOpen={isOpen} setIsOpen={setIsOpen} action={handleEdit} title="Edit user" desc=""/>
-    </>
+    //add product
+    const [EditIsOpen, setEditIsOpen] = useState(false)
     
+  return (
+    <Container>
+        <Title>Users</Title>
+        <Wrapper>
+            
+            <FilterSection>
+                <SearchProduct placeholder='Search by User by name/email/phone/id ' onChange={(e) => handleS(e, {type: "search"})}></SearchProduct>
+                <Search onClick={() => fetchUsers(dispatch, querie)}>Search</Search>
+            </FilterSection>
+            <UsersTableComp/>
+        </Wrapper>
+        <EditUser isOpen={EditIsOpen} setIsOpen={setEditIsOpen} editProduct={false} title="Add Product" desc="Add your product's information from here"/>
+    </Container>
   )
 }
 
