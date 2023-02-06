@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { useDispatch } from 'react-redux';
-import { addProducts, editProduct } from '../redux/Products';
 import { addProductapi, editProductapi } from '../redux/apiCalls/productsApis';
 
 
@@ -44,6 +43,10 @@ const UploadImage = styled.div`
   > svg {
     color: teal;
   }
+`
+const ImagePreview = styled.img`
+  width: 6rem;
+  margin: 0.5rem 0;
 `
 const UploadTitle = styled.span`
 
@@ -119,7 +122,7 @@ const Tag = styled.div`
 `
 
 function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
-  const DefaultValues = {title: "", productno: "", size: [], color: [], desc: "",categories: [], quantity: "", price: ""}
+  const DefaultValues = {title: "", productno: "", size: [], color: [], desc: "",categories: [], quantity: "", price: "", img: null}
   
   const dispatch = useDispatch();
   const [Product, setProduct] = useState(DefaultValues)
@@ -135,7 +138,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
     
     const prev = Product[property]; //we ddnt used Product.property bcz iw will find a field where the key is property but in this cal it will find the value of property
     if(Array.isArray(prev)) {
-      const exist = prev.filter(i => i == value.toUpperCase())
+      const exist = prev.filter(i => i === value.toUpperCase())
       if(exist?.length) return //TODO: add Errors
       
     }
@@ -144,30 +147,37 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
     e.target.value = "";
   }
 
-  const handleSubmit = () => {
-    console.log(editProduct)
+  const handleSubmit = async () => {
+
     if(!EditProductInfo) {
       console.log("editProduct")
+      
       addProductapi(dispatch, Product)
     } else {
       console.log("no editProduct")
+      
+      //const res = await req.put(`/api/products/${Product._id}`, {image: imageBASE});
       editProductapi(dispatch,Product)
     }
     
     setIsOpen(false)
   }
-  //console.log(Product?.size?.includes("Ll"))
-  const handleSizeDelete = (size) => {
 
-    setProduct(p => ({...p, size: p.size.filter(i => i!==size)}))
-  }
-  const handleColorDelete = (color) => {
-    
-  }
-  const handleCategoriesDelete = (cat) => {
-    
+  const handleDelete = (property, value) => {
+    setProduct(p => ({...p, [property]: p[property].filter(i => i!==value)}))
   }
 
+
+
+  //handle image
+  const HandleIMG = (e) => {
+    const file = e.target.files[0];
+    const filereader = new FileReader();
+    filereader.readAsDataURL(file);
+    filereader.onload = () => {  
+      setProduct(p => ({...p, img: filereader.result}))
+    }
+  }
 
   return (
     <EditModal isOpen={isOpen} setIsOpen={setIsOpen} action={handleSubmit} title={title} desc={desc}>
@@ -177,11 +187,15 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
               <Lable>Product Image</Lable>
             </Left>
             <Right>
-              <UploadImage>
-                <CloudUploadOutlinedIcon/>
-                <UploadTitle>Drag your image here</UploadTitle>
-                <UploadDesc>(Only *.jpeg and *.png images will be accepted)</UploadDesc>
-              </UploadImage>
+            <input accept="image/jpeg, image/png" type="file" style={{display: "none"}} id="file" onChange={HandleIMG}/>
+              <label htmlFor="file">
+                <UploadImage>
+                  <CloudUploadOutlinedIcon/>
+                  <UploadTitle>Drag your image here</UploadTitle>
+                  <UploadDesc>(Only *.jpeg and *.png images will be accepted)</UploadDesc>
+                </UploadImage>
+              </label>
+              <ImagePreview src={Product.img}/>
             </Right>
           </Section>
 
@@ -201,7 +215,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
               <TagSection>
                 {Product?.size?.map((s) => {
                   return <Tag key={s}>
-                  <span>{s}</span><div onClick={() =>handleSizeDelete(s)}><CloseOutlinedIcon/></div>
+                  <span>{s}</span><div onClick={() =>handleDelete("size", s)}><CloseOutlinedIcon/></div>
                 </Tag>
                 })}
                 <Input placeholder='Sizes (Write and press Enter)'  name="size" onKeyDown={e => {if(e.key==="Enter") handleChange(e, "size")}}/>
@@ -215,7 +229,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
               <TagSection>
                 {Product?.color?.map((s) => {
                   return <Tag key={s} color={s}>
-                  <span >{s}</span><div onClick={() =>handleColorDelete(s)}><CloseOutlinedIcon/></div>
+                  <span >{s}</span><div onClick={() =>handleDelete("color",s)}><CloseOutlinedIcon/></div>
                 </Tag>
                 })}
                 <Input style={{height: "80px"}} type="color" placeholder='Sizes (Write and press Enter)' name="color" onKeyDown={e => {if(e.key==="Enter") handleChange(e, "color")}}/>
@@ -234,7 +248,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
               <TagSection>
                 {Product?.categories?.map((s) => {
                   return <Tag key={s}>
-                  <span>{s}</span><div onClick={() => handleCategoriesDelete(s)}><CloseOutlinedIcon/></div>
+                  <span>{s}</span><div onClick={() => handleDelete("categories",s)}><CloseOutlinedIcon/></div>
                 </Tag>
                 })}
                 <Input placeholder='Categories (Write and press Enter)' name="categories" onKeyDown={e => {if(e.key==="Enter") handleChange(e, "categories")}}/>

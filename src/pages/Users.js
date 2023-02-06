@@ -1,9 +1,7 @@
-import AddIcon from '@mui/icons-material/Add';
 import {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from '../redux/apiCalls/users';
-import EditUser from '../components/EditUser';
 import UsersTableComp from '../components/UsersTableComp';
 import { clearUsers } from '../redux/UseersComponentRedux';
 
@@ -25,7 +23,7 @@ const Wrapper = styled.div`
 const Title = styled.h1`
     font-size: 1.25rem;
 `
-const FilterSection = styled.div`
+const FilterSection = styled.form`
     max-width: 100%;
     display: flex;
     padding: 1.5rem 1rem;
@@ -79,9 +77,12 @@ function Users() {
         if(type === "search") setquery(p => ({...p, s : e.target.value})) 
     }
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        fetchUsers(dispatch, querie)
+    }
     useEffect(()=>{
         fetchUsers(dispatch, querie);  
-
         return () => {
             dispatch(clearUsers())
         }
@@ -89,8 +90,6 @@ function Users() {
 
 
     //add product
-    const [EditIsOpen, setEditIsOpen] = useState(false)
-    
   return (
     <Container>
         <Title>Users</Title>
@@ -98,11 +97,10 @@ function Users() {
             
             <FilterSection>
                 <SearchProduct placeholder='Search by User by name/email/phone/id ' onChange={(e) => handleS(e, {type: "search"})}></SearchProduct>
-                <Search onClick={() => fetchUsers(dispatch, querie)}>Search</Search>
+                <Search type='submit' onClick={handleSearch}>Search</Search>
             </FilterSection>
             <UsersTableComp/>
         </Wrapper>
-        <EditUser isOpen={EditIsOpen} setIsOpen={setEditIsOpen} editProduct={false} title="Add Product" desc="Add your product's information from here"/>
     </Container>
   )
 }

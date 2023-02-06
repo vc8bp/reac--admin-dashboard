@@ -79,6 +79,7 @@ function UsersTableComp() {
 
     //edit user
     const [isOpen, setIsOpen] = useState(false)
+    const [EditUserInfo, setEditUserInfo] = useState(null)
 
     const handleEdit = () => {
         console.log("i am action")
@@ -114,7 +115,7 @@ function UsersTableComp() {
                         <Td><IsAdmin value={u.isAdmin}>{JSON.stringify(u.isAdmin)}</IsAdmin></Td>
                         <Td>
                             <div>
-                                <EditIcon onClick={() => setIsOpen(true)} /><DeleteIcon/>
+                                <EditIcon onClick={() => {setEditUserInfo(u); setIsOpen(true)}} /><DeleteIcon/>
                             </div>
                         </Td>
                     </Tr>
@@ -122,7 +123,7 @@ function UsersTableComp() {
             </Tbody>
         </Table>
     </TableWrapper>
-    <EditUser isOpen={isOpen} setIsOpen={setIsOpen} action={handleEdit} title="Edit user" desc="Updated necessary information of Users from here"/>
+    <EditUser EditUserInfo={EditUserInfo} isOpen={isOpen} setIsOpen={setIsOpen} action={handleEdit} title="Edit user" desc="Updated necessary information of Users from here"/>
     </>
     
   )

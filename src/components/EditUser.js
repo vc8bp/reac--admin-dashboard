@@ -26,9 +26,23 @@ const Left = styled.div`
 `
 const Right = styled.div`
   flex: 2;
+
+  > input, select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.9rem 0.5rem;
+    background-color: #F4F5F7;
+    border: 1px rgb(229,231,235) solid;
+    border-radius: 1vmin;
+    font-size: 1.1rem;
+    outline: none;
+
+    :focus  {
+      background-color: white;
+    }
+  }
 `
-const UploadImage = styled.div`
-  
+const UploadImage = styled.div`  
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -47,40 +61,12 @@ const UploadTitle = styled.span`
 const UploadDesc = styled.p`
   font-size: 0.7rem;
 `
-const Lable = styled.label`
 
-`
 
-const Input = styled.input`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0.9rem 0.5rem;
-  background-color: #F4F5F7;
-  border: 1px rgb(229,231,235) solid;
-  border-radius: 1vmin;
-  font-size: 1.1rem;
-  outline: none;
-
-  :focus  {
-    background-color: white;
-  }
-`
-
-const TagSection = styled.div`
-  display: flex;
-  background-color: #F4F5F7;
-  flex-wrap: wrap;
-
-  > input {
-    border-radius: 0;
-    border: none;
-    
-  }
-`
 
 
 function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc}) {
-  const DefaultValues = {firstName:"", lastName:"", email:"", phone:"", number:"", isAdmin:"false"}
+  const DefaultValues = {firstName:"", lastName:"", email:"", phone:"", number:"", isAdmin: false}
 
   const [User, setUser] = useState(DefaultValues)
 
@@ -93,7 +79,7 @@ function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc}) {
     const { name, value} = e.target;
     setUser((p) => ({...p, [name] :  value}))
   }
-
+  console.log(User)
   const handleSubmit = () => {
     if(!EditUserInfo) {
     } else {
@@ -102,14 +88,12 @@ function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc}) {
     setIsOpen(false)
   }
 
-
-
   return (
     <EditModal isOpen={isOpen} setIsOpen={setIsOpen} action={handleSubmit} title={title} desc={desc}>
               <Container>
           <Section>
             <Left>
-              <Lable>User Image</Lable>
+              <label>User Image</label>
             </Left>
             <Right>
               <UploadImage>
@@ -121,29 +105,34 @@ function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc}) {
           </Section>
 
            <Section>
-            <Left><Lable>First name</Lable></Left>
-            <Right><Input name="firstName" value={User?.firstName} onChange={e => handleChange(e)}/></Right>
+            <Left><label>First name</label></Left>
+            <Right><input name="firstName" value={User?.firstName} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
-            <Left><Lable>Last name</Lable></Left>
-            <Right><Input name="lastName" value={User?.lastName} onChange={e => handleChange(e)}/></Right>
+            <Left><label>Last name</label></Left>
+            <Right><input name="lastName" value={User?.lastName} onChange={e => handleChange(e)}/></Right>
           </Section>
 
 
           <Section>
-            <Left><Lable>Email</Lable></Left>
-            <Right><Input name="email" value={User?.email} onChange={e => handleChange(e)}/></Right>
+            <Left><label>Email</label></Left>
+            <Right><input name="email" value={User?.email} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
-            <Left><Lable>Number</Lable></Left>
-            <Right><Input name="number" value={User?.number} onChange={e => handleChange(e)}/></Right>
+            <Left><label>Number</label></Left>
+            <Right><input name="number" value={User?.number} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
-            <Left><Lable>IsAdmin</Lable></Left>
-            <Right><Input name="price" value={User?.price} onChange={e => handleChange(e)}/></Right>
+            <Left><label>IsAdmin</label></Left>
+            <Right>
+              <select onChange={e => setUser(p => ({...p, isAdmin: (e.target.value === "true")}))}> {/* used === because i wanted to convert string "true" to boolean true  */}
+                <option selected value={false}>User</option>
+                <option value={true}>Admin</option>
+              </select>
+            </Right>
           </Section>
           
         </Container>

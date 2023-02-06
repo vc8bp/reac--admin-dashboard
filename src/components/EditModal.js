@@ -154,7 +154,7 @@ function EditModal({children, isOpen, setIsOpen, title, desc, action}) {
                 {children}
             </Middle>
             <Bottom>
-                <CancelBtn>Cancel</CancelBtn>
+                <CancelBtn onClick={() => setIsOpen(false)}>Cancel</CancelBtn>
                 <SubmitBtn onClick={action} >{title}</SubmitBtn>
             </Bottom>
             
