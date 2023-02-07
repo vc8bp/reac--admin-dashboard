@@ -5,7 +5,6 @@ import Login from "./pages/Login";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
 import SlideBar from "./components/SlideBar";
-import styled from "styled-components";
 import UserPage from "./pages/UserPage";
 import Users from "./pages/Users";
 import { logoutUser } from "./redux/userRedux";
@@ -14,13 +13,7 @@ import Products from "./pages/Products";
 import { useState } from "react";
 import MessageComponent from "./components/MesageComponent";
 import { useEffect } from "react";
-
-const Container = styled.div`
-/* display: flex;
-flex-direction: row;
-justify-content: center; */
-height: 100vh;
-`
+import Orders from "./pages/Orders";
 
 function IsLogedin() {
   const user = useSelector(state => state.user.currentUser)
@@ -60,7 +53,7 @@ function App() {
   return (
     <>
     {user && <Navbar setSideBar={setisSlideBarOpen} isOpen={isSlideBarOpen}/>}
-    <Container>
+    <div style={{height: "100vh"}}>
       {user && <SlideBar isOpen={isSlideBarOpen}/>}
       <Routes>  
         <Route element={<IsLogedin/>} >
@@ -72,10 +65,11 @@ function App() {
           <Route path="/user" element={<Users/>}/>
           <Route path="/user/:id" element={<UserPage/>}/>
           <Route path="/products" element={<Products/>}/>
+          <Route path="/orders" element={<Orders/>}/>
         </Route>
       </Routes>    
       <MessageComponent/>
-    </Container>
+    </div>
     
     </>
   );

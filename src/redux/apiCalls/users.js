@@ -1,11 +1,12 @@
 import { req } from "../../axiosReqMethods";
-
 import {
   fetchStart,
   fetchFailed,
   fetchSuccess,
   reserError,
+  updateUserRedux,
 } from "../UseersComponentRedux";
+import { setError } from '../MessageRedux'
 
 
 
@@ -23,11 +24,14 @@ export const fetchUsers = async (dispatch, querie) => {
   }
 };
 
-export const updateUser = async (userID, data) => {
+export const updateUser = async (dispatch, userID, data) => {
   try {
-    const res = req.put(`/api/users/${userID}`, data);
+    const res = await req.put(`/api/users/${userID}`, data);
+    dispatch(setError("user updated successfully"))
+    dispatch(updateUserRedux(res?.data))
     return res;
   } catch (err) {
+    dispatch(setError("user updated successfully"))
     console.log(`error is ${err}`);
   }
 };

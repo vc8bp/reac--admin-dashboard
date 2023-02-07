@@ -2,6 +2,8 @@ import {useState, useEffect} from 'react'
 import EditModal from './EditModal'
 import styled from 'styled-components'
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import { updateUser } from '../redux/apiCalls/users';
+import { useDispatch } from 'react-redux';
 
 
 const Container = styled.div`
@@ -65,7 +67,7 @@ const UploadDesc = styled.p`
 
 
 
-function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc}) {
+function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc, action}) {
   const DefaultValues = {firstName:"", lastName:"", email:"", phone:"", number:"", isAdmin: false}
 
   const [User, setUser] = useState(DefaultValues)
@@ -79,11 +81,14 @@ function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc}) {
     const { name, value} = e.target;
     setUser((p) => ({...p, [name] :  value}))
   }
-  console.log(User)
-  const handleSubmit = () => {
-    if(!EditUserInfo) {
-    } else {
-    }
+
+  const dispatch = useDispatch()
+  const handleSubmit = async () => {
+
+    if(!EditUserInfo) return
+    const {resetPasswordExpire,createdAt,_id , ...others} = User;
+
+    await updateUser(dispatch, User._id, others)
     
     setIsOpen(false)
   }
@@ -129,7 +134,7 @@ function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc}) {
             <Left><label>IsAdmin</label></Left>
             <Right>
               <select onChange={e => setUser(p => ({...p, isAdmin: (e.target.value === "true")}))}> {/* used === because i wanted to convert string "true" to boolean true  */}
-                <option selected value={false}>User</option>
+                <option defaultValue value={false}>User</option>
                 <option value={true}>Admin</option>
               </select>
             </Right>

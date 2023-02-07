@@ -39,7 +39,7 @@ const UploadImage = styled.div`
   align-items: center;
   border: 1px dashed black;
   padding: 1rem;
-
+label
   > svg {
     color: teal;
   }
@@ -53,9 +53,6 @@ const UploadTitle = styled.span`
 `
 const UploadDesc = styled.p`
   font-size: 0.7rem;
-`
-const Lable = styled.label`
-
 `
 
 const Textarea = styled.textarea`
@@ -184,7 +181,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
               <Container>
           <Section>
             <Left>
-              <Lable>Product Image</Lable>
+              <label>Product Image</label>
             </Left>
             <Right>
             <input accept="image/jpeg, image/png" type="file" style={{display: "none"}} id="file" onChange={HandleIMG}/>
@@ -200,17 +197,17 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
           </Section>
 
            <Section>
-            <Left><Lable>Product Name/Title</Lable></Left>
+            <Left><label>Product Name/Title</label></Left>
             <Right><Input name="title" value={Product.title} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
-            <Left><Lable>Product Number</Lable></Left>
+            <Left><label>Product Number</label></Left>
             <Right><Input name="productno" value={Product.productno} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
-            <Left><Lable>Product Size</Lable></Left>
+            <Left><label>Product Size</label></Left>
             <Right>
               <TagSection>
                 {Product?.size?.map((s) => {
@@ -224,7 +221,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
           </Section>
 
           <Section>
-            <Left><Lable>Product Color</Lable></Left>
+            <Left><label>Product Color</label></Left>
             <Right>
               <TagSection>
                 {Product?.color?.map((s) => {
@@ -238,12 +235,12 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
           </Section>
 
           <Section>
-            <Left><Lable>Product Description</Lable></Left>
+            <Left><label>Product Description</label></Left>
             <Right><Textarea name="desc" value={Product.desc || ""} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
-            <Left><Lable>Product Category</Lable></Left>
+            <Left><label>Product Category</label></Left>
             <Right>
               <TagSection>
                 {Product?.categories?.map((s) => {
@@ -257,12 +254,12 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
           </Section>
 
           <Section>
-            <Left><Lable>Product Quantity</Lable></Left>
+            <Left><label>Product Quantity</label></Left>
             <Right><Input name="quantity" value={Product.quantity} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
-            <Left><Lable>Product Price</Lable></Left>
+            <Left><label>Product Price</label></Left>
             <Right><Input name="price" value={Product.price} onChange={e => handleChange(e)}/></Right>
           </Section>
           

@@ -88,7 +88,7 @@ const SlideBar = (props) => {
 
                         <SidebarListItem>
                             <LocalAtm />
-                            Orders
+                            <Link to="/orders">Orders</Link>
                         </SidebarListItem>
                     </SidebarList>
                 </SidebarMenu>
