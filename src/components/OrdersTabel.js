@@ -1,11 +1,10 @@
-import React, {useState} from 'react'
 import styled from 'styled-components'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { req } from '../axiosReqMethods';
 import { useDispatch } from 'react-redux';
 import { setError } from '../redux/MessageRedux';
-
+import { useNavigate } from 'react-router-dom'
 
 const TableWrapper = styled.div`
     margin-top: 20px;   
@@ -78,6 +77,7 @@ const Options = styled.option`
 `
 
 function OrdersTabel({orders, setOrders}) {
+    const navigate = useNavigate()
 const dispatch = useDispatch();
 
 const handleStateChange = async (id, e) => {
@@ -129,7 +129,7 @@ const handleStateChange = async (id, e) => {
                                 <Options value="delivered">Delivered</Options>
                             </Select>
                         </Td>
-                        <Td><RemoveRedEyeOutlinedIcon/></Td>
+                        <Td><RemoveRedEyeOutlinedIcon onClick={() => navigate(`/order/${o._id}`)}/></Td>
                     </Tr>
                 })}
             </Tbody>

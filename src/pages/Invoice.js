@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import {mobile} from '../Responsive'
+import { req } from '../axiosReqMethods'
+import { useLocation } from 'react-router-dom'
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
 const Container = styled.div`
   background-color: #F4F5F7;
-  height: 100vh;   
+  min-height: 100vh;
+  padding-bottom: 2rem;
   display: flex;
   justify-content: center;
+
+  @page { size: auto;  margin: 0mm; } // this is for printing to remove date, pageno, title ref: https://stackoverflow.com/questions/17942969/css-media-print-not-working-at-all
     
+  @media print {
+    background-color: red;
+  }
 `
 const Wrapper = styled.div`
   width: 1200px;  
@@ -51,22 +59,59 @@ const First = styled.div`
       margin: 0
     }
   }
+  @media only screen and (max-width: 700px) {
+    flex-direction: column;
 
-  ${mobile({
-    flexDirection: "column",
-  })}
+    >div {
+      text-align: left;
+    }
+  }
+  
 `
+
+//status//
+const statusColors = {
+  pending: { background: "FDF6B2", color: "C6783B" },
+  processing: { background: "DEF7EC", color: "87A66E" },
+  delivered: { background: "E1EFFE", color: "3F91FA" }
+};  
+const Status = styled.span`
+  font-weight: 500;
+  margin: 0;
+  padding: 0 0.7rem;
+  text-align: center;
+  border-radius: 50px;
+  background-color: #${({ status }) => statusColors[status]?.background};
+  color: #${({ status }) => statusColors[status]?.color};
+`;
+//status END//
 
 const SecondoryTitle = styled.div`
   font-size: 1rem;
   font-weight: 600;
 `
+const SmallTitle = styled.div`
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0.4rem 0;
+  color: #707275;
+`
 const Second = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media only screen and (max-width: 700px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
 `
 const ItemContainer = styled.div`
   text-align: ${p => p.right ? "right" : "left"};
+
+  @media only screen and (max-width: 700px) {
+    text-align: left;
+  }
 `
 
 
@@ -85,6 +130,10 @@ const Table = styled.table`
 const Thead = styled.thead`
     background-color: teal;
     color: white;
+
+    > * {
+      font-size: 0.9rem;
+    }
 `
 const Tbody = styled.tbody`
     background-color: white;
@@ -101,6 +150,7 @@ const Td = styled.td`
     margin-top: auto;
     color: ${p => p.price && "red"};
     font-weight: ${p => p.price && 600};
+
 
     > div {
         display: flex;
@@ -121,6 +171,15 @@ const Td = styled.td`
             color: rgb(130,130,130);
         }
     }
+
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    @media only screen and (min-width: 700px) {
+      padding: 0.75rem 0.5rem;
+    }
 `
 const Tr = styled.tr`
     border-bottom: 1px solid #d5d6d7;
@@ -131,6 +190,10 @@ const Fourth = styled.div`
   justify-content: space-between;
   background-color: #F4F5F7;
   border-radius: 1vmax;
+
+  @media only screen and (max-width: 700px) {
+    flex-direction: column;
+  }
 `
 
 const FourthChild = styled.div`
@@ -143,36 +206,82 @@ const FourthChild = styled.div`
   }
 `
 
+const PrintBtn = styled.button`
+
+  padding: 0.7rem 1.5rem;
+  border-radius: 1vmin;
+  background-color: teal;
+  color: white;
+  border: none;
+  margin: 1rem 0;
+  font-weight: 400;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+
+  :hover {
+    background-color: #00a5a5;
+  }
+`
+
 
 function Invoice() {
+  const location = useLocation()
+  const id = location.pathname.split('/')[2]
+  const [order, setOrder] = useState()
+
+  useEffect(() => {
+    (async () => {
+      try {     
+        const {data} = await req.get(`api/orders/${id}`) 
+        setOrder(data)
+      } catch (error) {
+        
+      }
+    })()
+  },[])
+
+  
+
+  const handlePrint = () => {
+    let printContents = document.getElementById('invoice-container').innerHTML;
+    let originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents; 
+    window.location.reload();
+  }
   return (
     <Container>
-      <Wrapper>
+      {order && <Wrapper>
         <Title>Invoice</Title>
-        <InvoiceContainer>
+        <div id="invoice-container">
+        <InvoiceContainer id="invoice">
             <First>
               <h1>
-              INVOICE
-              <p>STATUS: Pending</p>
+                INVOICE
+                <SmallTitle>STATUS: <Status status={order.orderStatus}>{order.orderStatus}</Status></SmallTitle>
               </h1>
               <div>
-                image
-                <p>Cecilia Chapman, 561-4535 Nulla LA, <bt/> india</p>
+                <h2 style={{margin: 0,marginBottom: "0.5rem"}}>NAME</h2>
+                <p>{process.env.REACT_APP_COMPANY_ADDRESS} <br/> {process.env.REACT_APP_COMPANY_ADDRESS_COUNTRY}</p>
               </div></First>
             <Second>
               <ItemContainer>
                 <SecondoryTitle>DATE</SecondoryTitle>
-                February 8, 2023
+                {new Date(order.createdAt).toLocaleString()}
               </ItemContainer>
               <ItemContainer>
-                <SecondoryTitle>INVOICE NO</SecondoryTitle>
-                #353454
+                <SecondoryTitle>ORDER ID</SecondoryTitle>
+                {order.paymentInfo.razorpay_order_id}
               </ItemContainer>
               <ItemContainer right={true}>
                 <SecondoryTitle>INVOICE TO.</SecondoryTitle>
-                xxx xxx<br/>
-                123<br/>
-                Thailand, Thailand, 34000
+                {order.userInfo.name}<br/>
+                {order.userInfo.address.mobile}<br/>
+                {`${order.userInfo.address.street}, ${order.userInfo.address.city} - ${order.userInfo.address.zip}, ${order.userInfo.address.state}`}
               </ItemContainer>
             </Second>
             <Third>
@@ -181,37 +290,36 @@ function Invoice() {
                   <tr>
                     <Td>SR.</Td>
                     <Td>PRODUCT NAME</Td>
+                    <Td>COLOR/SIZE</Td>
                     <Td>QUANTITY</Td>
                     <Td>ITEM PRICE</Td>
                     <Td>TOTEL</Td>
                   </tr>
                 </Thead>
                 <Tbody>
-                  <Tr>
-                    <Td>1</Td>
-                    <Td>Blueberry</Td>
-                    <Td>200</Td>
-                    <Td>2</Td>
-                    <Td price={true}>400</Td>
+                {order.products.map((o, index) => {
+                  return (
+                    <Tr>
+                    <Td>{index + 1}</Td>
+                    <Td>{o.title}</Td>
+                    <Td>{`${o.color}, ${o.size}`}</Td>
+                    <Td><b>{o.price}</b></Td>
+                    <Td><b>{o.quantity}</b></Td>
+                    <Td price={true}>{o.price * o.quantity}</Td>
                   </Tr>
-                  <Tr>
-                    <Td>1</Td>
-                    <Td>Tshirt</Td>
-                    <Td>600</Td>
-                    <Td>3</Td>
-                    <Td  price={true}>1800</Td>
-                  </Tr>
+                  )
+                })}
                 </Tbody>
               </Table>
             </Third>
             <Fourth>
               <FourthChild>
-                <SecondoryTitle>PAYMENT METHOD</SecondoryTitle>
-                <span>Online</span>
+                <SecondoryTitle>ORDER TYPE</SecondoryTitle>
+                <span>{order.type}</span>
               </FourthChild>
               <FourthChild>
-                <SecondoryTitle>SHIPPING COST</SecondoryTitle>
-                <span>80</span>
+                <SecondoryTitle>TRANSECTION COST</SecondoryTitle>
+                <span>{order.price * 0.02}</span>
               </FourthChild>
               <FourthChild>
                 <SecondoryTitle>DISCOUNT</SecondoryTitle>
@@ -219,11 +327,13 @@ function Invoice() {
               </FourthChild>
               <FourthChild>
                 <SecondoryTitle>TOTAL AMOUNT</SecondoryTitle>
-                <span>2200</span>
+                <span>{Math.ceil(order.price + (order.price * 0.02))}</span>
               </FourthChild>
             </Fourth>
         </InvoiceContainer>
-      </Wrapper>
+        </div>
+        <PrintBtn onClick={handlePrint}>Print invoice <LocalPrintshopIcon/></PrintBtn>
+      </Wrapper>}
     </Container>
   )
 }
