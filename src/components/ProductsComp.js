@@ -112,6 +112,7 @@ function ProductsComp() {
                     <Td>CATEGORY</Td>
                     <Td>PRICE</Td>
                     <Td>STOCK</Td>
+                    <Td>PURCHASED</Td>
                     <Td>DETAILS</Td>
                     <Td>ACTIONS</Td>
                 </tr>
@@ -135,6 +136,7 @@ function ProductsComp() {
                         <Td>{p?.categories ? p?.categories[0] : ""}</Td>
                         <Td>{p?.price}</Td>
                         <Td>{p?.quantity}</Td>
+                        <Td>{p?.purchasedCount}</Td>
                         <Td>DETAILS</Td>
                         <Td>
                             <div>

@@ -265,7 +265,7 @@ function Invoice() {
                 <SmallTitle>STATUS: <Status status={order.orderStatus}>{order.orderStatus}</Status></SmallTitle>
               </h1>
               <div>
-                <h2 style={{margin: 0,marginBottom: "0.5rem"}}>NAME</h2>
+                <h2 style={{margin: 0,marginBottom: "0.5rem"}}>{process.env.REACT_APP_COMPANY_NAME}</h2>
                 <p>{process.env.REACT_APP_COMPANY_ADDRESS} <br/> {process.env.REACT_APP_COMPANY_ADDRESS_COUNTRY}</p>
               </div></First>
             <Second>
@@ -290,7 +290,6 @@ function Invoice() {
                   <tr>
                     <Td>SR.</Td>
                     <Td>PRODUCT NAME</Td>
-                    <Td>COLOR/SIZE</Td>
                     <Td>QUANTITY</Td>
                     <Td>ITEM PRICE</Td>
                     <Td>TOTEL</Td>
@@ -302,7 +301,6 @@ function Invoice() {
                     <Tr>
                     <Td>{index + 1}</Td>
                     <Td>{o.title}</Td>
-                    <Td>{`${o.color}, ${o.size}`}</Td>
                     <Td><b>{o.price}</b></Td>
                     <Td><b>{o.quantity}</b></Td>
                     <Td price={true}>{o.price * o.quantity}</Td>

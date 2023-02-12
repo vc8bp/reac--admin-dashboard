@@ -56,12 +56,13 @@ const SlideBar = (props) => {
                 <SidebarMenu>
                     <SidebarTitle>Dashboard</SidebarTitle>
                     <SidebarList>
-                  
+                        <Link to="/">
                             <SidebarListItem>
                                 <LineStyle />
-                                <Link to="/">Home</Link>
+                                Home
                             </SidebarListItem>
-                  
+                        </Link>
+                        
                         <SidebarListItem>
                             <PieChart />
                             Analytics
@@ -76,21 +77,27 @@ const SlideBar = (props) => {
                     <SidebarTitle>All Menu</SidebarTitle>
                     <SidebarList>
                         
-                        <SidebarListItem>
+                        <Link to="/user">
+                            <SidebarListItem>
                             <PermIdentity />
-                            <Link to="/user">Users</Link>
-                        </SidebarListItem>
-                    
-                        <SidebarListItem>
-                            <Storefront />
-                            <Link to="/products">Products</Link>
-                        </SidebarListItem>
+                                Users
+                            </SidebarListItem>
+                        </Link>
+                        <Link to="/products">
+                            <SidebarListItem>
+                                <Storefront />
+                                Products
+                            </SidebarListItem>
+                        </Link>
 
-                        <SidebarListItem>
-                            <LocalAtm />
-                            <Link to="/orders">Orders</Link>
-                        </SidebarListItem>
+                        <Link to="/orders">
+                            <SidebarListItem>
+                                <LocalAtm />
+                                Orders
+                            </SidebarListItem>
+                        </Link>
                     </SidebarList>
+
                 </SidebarMenu>
                 <SidebarMenu>
                     <SidebarTitle>Connect</SidebarTitle>
