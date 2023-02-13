@@ -10,7 +10,8 @@ import AddIcon from '@mui/icons-material/Add';
 
 
 const Container = styled.div`
-    height: 100vh;
+    padding: 1rem 0;
+    min-height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: column;

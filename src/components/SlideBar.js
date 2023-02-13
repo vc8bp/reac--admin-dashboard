@@ -1,6 +1,7 @@
 import React from 'react'
-import { LineStyle, Timeline, TrendingUp, PermIdentity, Storefront, LocalAtm, Drafts, Feedback, Forum, PieChart } from "@material-ui/icons";
+import { LineStyle, Timeline, TrendingUp, PermIdentity, Storefront, LocalAtm, Drafts, Feedback, Forum } from "@material-ui/icons";
 import styled, { css } from "styled-components";
+import CampaignIcon from '@mui/icons-material/Campaign';
 import { Link} from 'react-router-dom';
 
 
@@ -63,10 +64,12 @@ const SlideBar = (props) => {
                             </SidebarListItem>
                         </Link>
                         
-                        <SidebarListItem>
-                            <PieChart />
-                            Analytics
-                        </SidebarListItem>
+                        <Link to="announcment">
+                            <SidebarListItem>
+                                <CampaignIcon />
+                                Annoucment
+                            </SidebarListItem>
+                        </Link>
                         <SidebarListItem>
                             <TrendingUp />
                             Sales

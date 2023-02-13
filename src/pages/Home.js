@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Stats from '../components/Stats'
+import ChartsComponent from '../components/ChartsComponent'
 
 
 
@@ -27,6 +28,7 @@ function Home() {
           <Wrapper>
             <h1>Dashboard Overview</h1>
             <Stats/>
+            <ChartsComponent/>
           </Wrapper>
         </HomeComponent>
  

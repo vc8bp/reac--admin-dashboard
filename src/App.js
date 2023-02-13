@@ -15,6 +15,7 @@ import MessageComponent from "./components/MesageComponent";
 import { useEffect } from "react";
 import Orders from "./pages/Orders";
 import Invoice from "./pages/Invoice";
+import Annoucment from "./pages/Annoucment";
 
 function IsLogedin() {
   const user = useSelector(state => state.user.currentUser)
@@ -68,6 +69,7 @@ function App() {
           <Route path="/products" element={<Products/>}/>
           <Route path="/orders" element={<Orders/>}/>
           <Route path='/order/:id' element={<Invoice/>}/>
+          <Route path='announcment' element={<Annoucment/>}/>
         </Route>
       </Routes>    
       <MessageComponent/>

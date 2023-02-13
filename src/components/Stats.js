@@ -68,10 +68,9 @@ const OrdersStatsContainer = styled.div`
 const OrderStats = styled.div`
     flex: 1;
     height: 100px;
-    border: 0 solid #d5d6d7;
+    border: 1px solid #E5E7EB;
     background-color: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 0px 7px 3px rgba(0,0,0,0.2);
+    border-radius: 0.5rem;   
     padding: 1rem;
     display: flex;
     min-width: 250px;
@@ -143,7 +142,7 @@ function Stats() {
 
   return (
     <Container>
-        <LStatsContainer>
+        {orderPrice ? <LStatsContainer>
             <LStats color='0694A2'>
                 <TodayIcon/>
                 <p>Today's Order's</p>
@@ -159,7 +158,7 @@ function Stats() {
                 <p>Total Order's</p>
                 <p>{orderPrice[0].allTime}</p>
             </LStats>
-        </LStatsContainer>
+        </LStatsContainer> : null}
 
         {orderStats ? <OrdersStatsContainer>
             <OrderStats backColor="FEECDC" logoColor="D03801">
