@@ -30,17 +30,17 @@ const PieChart = ({data, title}) => {
           'rgba(54, 162, 235, 0.6)',
           'rgba(255, 206, 86, 0.6)',
           'rgba(75, 192, 192, 0.6)',
-          'rgba(153, 102, 255, 0.6)'
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(255, 159, 64, 0.6)',
+          'rgba(255, 141, 153, 0.6)',
+          'rgba(77, 109, 243, 0.6)',
+          'rgba(238, 130, 238, 0.6)',
+          'rgba(64, 224, 208, 0.6)',
         ],
       hoverBorderWidth: 1,
       hoverBorderColor: '#000'
     }]
   });
-
-
-  const options = {
-    maintainAspectRatio: false	// Don't maintain w/h ratio
-  }
 
   return (
     <Container>

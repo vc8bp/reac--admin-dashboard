@@ -21,16 +21,19 @@ const Container = styled.div`
 function ChartsComponent() {
     const [sizeColordataSet, setsizeColordataSet] = useState();
     const [topProducts, setTopProducts] =  useState()
+    const [topCat, setTopCat] =  useState()
     useEffect(() => {
 
         (async () => {
             try {            
-                const [sizeColot, top] = await Promise.all([
+                const [sizeColot, top, topCatres] = await Promise.all([
                     await req.get('/api/analytics/popularsizecolor'),
-                    await req.get('/api/analytics/topproducts/?for=chart')
+                    await req.get('/api/analytics/topproducts/?for=chart'),
+                    await req.get('/api/analytics/topcat')
                 ])
                 setsizeColordataSet(sizeColot.data)
                 setTopProducts(top.data)
+                setTopCat(topCatres.data)
             } catch (error) {
             }
         })();
@@ -46,10 +49,10 @@ function ChartsComponent() {
             
         ) : null}
 
-        {sizeColordataSet ? (
+        {(sizeColordataSet && topCat) ? (
             <Container>
-                <PieChart data={topProducts} title="Top Size"/>
-                <PieChart data={topProducts} title="Top Size"/>
+                <PieChart data={topProducts} title="Top Products"/>
+                <PieChart data={topCat} title="Top categories"/>
             </Container>
             
         ) : null}   

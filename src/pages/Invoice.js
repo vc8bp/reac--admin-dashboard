@@ -173,9 +173,7 @@ const Td = styled.td`
     }
 
 
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+
 
     @media only screen and (min-width: 700px) {
       padding: 0.75rem 0.5rem;
