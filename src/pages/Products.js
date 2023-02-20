@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { req } from '../axiosReqMethods'
 import ProductsComp from '../components/ProductsComp'
 import { setProducts } from '../redux/Products'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import EditProduct from '../components/EditProducts';
 
 
@@ -81,7 +81,6 @@ const AddProduct = styled.button`
 function Products() {
     //const [products, setProducts] = useState([])
     const dispatch = useDispatch()
-    const products = useSelector(p => p.Products.products)
     const [querie, setquery] = useState()
 
     const handleS = async(e,{type}) => {     

@@ -4,9 +4,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useEffect } from 'react';
 import { req } from '../axiosReqMethods';
 import { useState } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditAnnouncments from '../components/EditAnnouncments';
+import AnnoucmentsTable from '../components/AnnoucmentsTable';
 
 const Container = styled.div`
   width: 100%;
@@ -62,31 +61,6 @@ const IconContainer = styled.div`
     }
   }
 `
-const TableWrapper = styled.div`
-  margin-top: 1rem;
-  overflow: auto;
-  border: 1px solid #EEE;
-  border-radius: 1vmin;
-`
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`
-const Thead = styled.thead`
-  background-color: teal;
-  color: #FFF;
-  text-align: left;
-`
-const Tbody = styled.tbody``
-const Tr = styled.tr`
-  border-bottom: 1px solid #EEE;
-  &:last-child {
-    border-bottom: none;
-  }
-`
-const Td = styled.td`
-  padding: 1rem;
-`
 
 function Annoucment() {
 
@@ -97,51 +71,26 @@ function Annoucment() {
       setannouncments(data)}
     )()
   }, [])
+  
 
-  const [editIsOpen, setEditIsOpen] = useState(false)
-  const [editAnnoucmentInfo, setEditAnnoucmentInfo] = useState()
-
-  const handleEdit = (a) => {
-    setEditAnnoucmentInfo(a)
-    setEditIsOpen(true)
-  }
+  //add Annoucment
+  const [addIsOpen, setAddIsOpen] = useState(false)
 
   return (
     <Container>
       <Wrapper>
         <Title>Announcments</Title>
         <TopSection>
-          <AddAnnouncments><IconContainer><AddIcon/></IconContainer>add Announcments</AddAnnouncments>
-          {announcments ? <TableWrapper>
-            <Table>
-              <Thead>
-                <Tr>
-                  <Td>Title</Td>
-                  <Td>Status</Td>
-                  <Td>Date Added</Td>
-                  <Td>Last updated</Td>
-                  <Td>Actions</Td>
-                </Tr>
-              </Thead>
-              <Tbody>
-              {announcments.map(a => {
-                return <Tr>
-                <Td>{a.title}</Td>
-                <Td>{JSON.stringify(a.active)}</Td>
-                <Td>{new Date(a.updatedAt).toLocaleDateString()}</Td>
-                <Td>{new Date(a.updatedAt).toLocaleDateString()}</Td>
-                <Td>
-                  <EditIcon onClick={() => handleEdit (a)}/>
-                  <DeleteIcon/>
-                </Td>
-              </Tr>
-              })}
-              </Tbody>
-            </Table>
-          </TableWrapper> : null}
+          <AddAnnouncments>
+            <IconContainer onClick={() => setAddIsOpen(true)}><AddIcon/></IconContainer>
+            add Announcments
+          </AddAnnouncments>
+
+          <AnnoucmentsTable announcments={announcments}/>
+
         </TopSection>
       </Wrapper>
-    <EditAnnouncments isOpen={editIsOpen} setIsOpen={setEditIsOpen} EditAnnouncmentsInfo={editAnnoucmentInfo} title="Edit Annoucment" desc="Edit your Annoucment's information from here" />
+    <EditAnnouncments isOpen={addIsOpen} setIsOpen={setAddIsOpen} title="Add Annoucment" desc="Add your Annoucment's information from here" />
     </Container>
   )
 }

@@ -56,34 +56,42 @@ const Textarea = styled.textarea`
 `
 
 
-function EditAnnouncments({isOpen, setIsOpen, EditAnnouncmentsInfo, title, desc, action}) {
+function EditAnnouncments({isOpen, setIsOpen, EditAnnouncmentsInfo, title, desc}) {
   const DefaultValues = {title:"", active: false}
 
   const [annoucment, setAnnoucment] = useState(DefaultValues)
 
   useEffect(() => {
-    if(!EditAnnouncmentsInfo) {
-        setAnnoucment({...EditAnnouncmentsInfo})
-    }
-  }, [])
+    if(!EditAnnouncmentsInfo)  return setAnnoucment(DefaultValues)
+    setAnnoucment({...EditAnnouncmentsInfo}) 
+  }, [EditAnnouncmentsInfo])
 
-  const handleSubmit = () => {
-    console.log("hello")
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setAnnoucment(p => ({...p, [name]: value}))
   }
   
+  const handleSubmit = () => {
+    if(!EditAnnouncmentsInfo){
+      console.log("add product")
+    } else {
+      console.log("update product")
+    }
+  }
 
   return (
     <EditModal isOpen={isOpen} setIsOpen={setIsOpen} action={handleSubmit} title={title} desc={desc}>
         <Container>
             <Section>
                 <Left><label>Product Description</label></Left>
-                <Right><Textarea name="title"/></Right>
+                <Right><Textarea name="title" value={annoucment.title} onChange={e => handleChange(e)}/></Right>
             </Section>
 
             <Section>
                 <Left><label>is activated</label></Left>
                 <Right>
-                <select >
+                <select name="active" value={annoucment.active} onChange={e => handleChange(e)}>
                     <option value={false}>false</option>
                     <option value={true}>true</option>
                 </select>
