@@ -62,7 +62,7 @@ function EditAnnouncments({isOpen, setIsOpen, EditAnnouncmentsInfo, title, desc}
   const [annoucment, setAnnoucment] = useState(DefaultValues)
 
   useEffect(() => {
-    if(!EditAnnouncmentsInfo)  return setAnnoucment(DefaultValues)
+    if(!EditAnnouncmentsInfo)  return
     setAnnoucment({...EditAnnouncmentsInfo}) 
   }, [EditAnnouncmentsInfo])
 

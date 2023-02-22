@@ -99,7 +99,7 @@ function Products() {
                 console.log(error)
             }  
         })()
-    },[querie])
+    },[querie, dispatch])
 
 
     //add product

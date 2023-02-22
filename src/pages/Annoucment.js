@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useEffect } from 'react';
 import { req } from '../axiosReqMethods';
 import { useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditAnnouncments from '../components/EditAnnouncments';
 import AnnoucmentsTable from '../components/AnnoucmentsTable';
 
@@ -31,13 +32,19 @@ const TopSection = styled.div`
   border-radius: 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 `
-const AddAnnouncments = styled.div`
+const AnnouncmentsActions = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.2rem;
+  justify-content: space-between;
   color: #444;
-  cursor: pointer;
+
+  >div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
 `
 const IconContainer = styled.div`
   border: 2px solid teal;
@@ -81,10 +88,16 @@ function Annoucment() {
       <Wrapper>
         <Title>Announcments</Title>
         <TopSection>
-          <AddAnnouncments>
-            <IconContainer onClick={() => setAddIsOpen(true)}><AddIcon/></IconContainer>
-            add Announcments
-          </AddAnnouncments>
+          <AnnouncmentsActions>
+            <div>
+              <IconContainer onClick={() => setAddIsOpen(true)}><AddIcon/></IconContainer>
+              add Announcments
+            </div>
+            <div>
+              <IconContainer onClick={() => setAddIsOpen(true)}><DeleteIcon/></IconContainer>
+              Deactivate All Annoucments
+            </div>
+          </AnnouncmentsActions>
 
           <AnnoucmentsTable announcments={announcments}/>
 
