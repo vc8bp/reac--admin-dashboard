@@ -7,6 +7,8 @@ import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditAnnouncments from '../components/EditAnnouncments';
 import AnnoucmentsTable from '../components/AnnoucmentsTable';
+import { setError } from '../redux/MessageRedux';
+import { useDispatch } from 'react-redux';
 
 const Container = styled.div`
   width: 100%;
@@ -70,6 +72,7 @@ const IconContainer = styled.div`
 `
 
 function Annoucment() {
+  const dispatch = useDispatch()
 
   const [announcments, setannouncments] = useState()
   useEffect(() => {
@@ -83,6 +86,16 @@ function Annoucment() {
   //add Annoucment
   const [addIsOpen, setAddIsOpen] = useState(false)
 
+  const DeactivateAllAnnoucments = async () => {
+    try {
+      const {data} = await req.delete("/api/announcment/active")
+      dispatch(setError(data.message))
+    } catch (error) {
+      
+    }
+    
+  }
+
   return (
     <Container>
       <Wrapper>
@@ -94,7 +107,7 @@ function Annoucment() {
               add Announcments
             </div>
             <div>
-              <IconContainer onClick={() => setAddIsOpen(true)}><DeleteIcon/></IconContainer>
+              <IconContainer onClick={DeactivateAllAnnoucments}><DeleteIcon/></IconContainer>
               Deactivate All Annoucments
             </div>
           </AnnouncmentsActions>

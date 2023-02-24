@@ -1,6 +1,9 @@
 import {useState, useEffect} from 'react'
 import EditModal from './EditModal'
 import styled from 'styled-components'
+import { req } from '../axiosReqMethods'
+import { setError } from '../redux/MessageRedux'
+import { useDispatch } from 'react-redux'
 
 
 const Container = styled.div`
@@ -57,6 +60,7 @@ const Textarea = styled.textarea`
 
 
 function EditAnnouncments({isOpen, setIsOpen, EditAnnouncmentsInfo, title, desc}) {
+  const dispatch = useDispatch()
   const DefaultValues = {title:"", active: false}
 
   const [annoucment, setAnnoucment] = useState(DefaultValues)
@@ -71,13 +75,33 @@ function EditAnnouncments({isOpen, setIsOpen, EditAnnouncmentsInfo, title, desc}
     const value = e.target.value;
     setAnnoucment(p => ({...p, [name]: value}))
   }
+
+  const editAnnouncmentApi = async () => {
+    try {
+      const {data} = await req.put(`/api/announcment/${annoucment._id}`, {title: annoucment.title, active: annoucment.active})
+      dispatch(setError(data?.message))
+    } catch (error) {
+      dispatch(setError(error.responce.data.message))
+    }
+    
+  }
+  const addAnnouncmentApi = async () => {
+    try {
+      const {data} = await req.post("/api/announcment", annoucment)
+      dispatch(setError(data?.message))
+    } catch (error) {
+      dispatch(setError(error.responce.data.message))
+    }
+    
+  }
   
   const handleSubmit = () => {
     if(!EditAnnouncmentsInfo){
-      console.log("add product")
+      addAnnouncmentApi()
     } else {
-      console.log("update product")
+      editAnnouncmentApi()
     }
+    setIsOpen(false)
   }
 
   return (
