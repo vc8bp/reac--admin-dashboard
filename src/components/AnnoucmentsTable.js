@@ -58,7 +58,7 @@ function AnnoucmentsTable({announcments}) {
                 return <Tr key={a._id}>
                 <Td>{a.title}</Td>
                 <Td>{JSON.stringify(a.active)}</Td>
-                <Td>{new Date(a.updatedAt).toLocaleDateString()}</Td>
+                <Td>{new Date(a.createdAt).toLocaleDateString()}</Td>
                 <Td>{new Date(a.updatedAt).toLocaleDateString()}</Td>
                 <Td>
                 <EditIcon onClick={() => handleEdit(a)}/>

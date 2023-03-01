@@ -3,6 +3,7 @@ import userReducer from './userRedux'
 import Products from "./Products";
 import UseersComponentRedux from "./UseersComponentRedux";
 import MessageRedux from "./MessageRedux";
+import AnnoucmentRedux from "./AnnoucmentRedux";
 import {
     persistStore,
     persistReducer,
@@ -29,6 +30,7 @@ export const store = configureStore({
         users: UseersComponentRedux,
         Products : Products,
         error : MessageRedux,
+        announcements : AnnoucmentRedux
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

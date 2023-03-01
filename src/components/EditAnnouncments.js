@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { req } from '../axiosReqMethods'
 import { setError } from '../redux/MessageRedux'
 import { useDispatch } from 'react-redux'
+import { addannouncements, editAnnoucment } from '../redux/AnnoucmentRedux'
 
 
 const Container = styled.div`
@@ -72,7 +73,8 @@ function EditAnnouncments({isOpen, setIsOpen, EditAnnouncmentsInfo, title, desc}
 
   const handleChange = (e) => {
     const name = e.target.name;
-    const value = e.target.value;
+    let value = e.target.value;
+    if (name === "active") value = JSON.parse(value) // parsivg value to json because this is coming like "true" and i want true thats why parsed it to JSON
     setAnnoucment(p => ({...p, [name]: value}))
   }
 
@@ -80,6 +82,7 @@ function EditAnnouncments({isOpen, setIsOpen, EditAnnouncmentsInfo, title, desc}
     try {
       const {data} = await req.put(`/api/announcment/${annoucment._id}`, {title: annoucment.title, active: annoucment.active})
       dispatch(setError(data?.message))
+      dispatch(editAnnoucment(annoucment))
     } catch (error) {
       dispatch(setError(error.responce.data.message))
     }
@@ -89,6 +92,7 @@ function EditAnnouncments({isOpen, setIsOpen, EditAnnouncmentsInfo, title, desc}
     try {
       const {data} = await req.post("/api/announcment", annoucment)
       dispatch(setError(data?.message))
+      dispatch(addannouncements(annoucment))
     } catch (error) {
       dispatch(setError(error.responce.data.message))
     }

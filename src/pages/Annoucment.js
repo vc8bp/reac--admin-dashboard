@@ -8,7 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditAnnouncments from '../components/EditAnnouncments';
 import AnnoucmentsTable from '../components/AnnoucmentsTable';
 import { setError } from '../redux/MessageRedux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { disableAllAnnoucments, editAnnoucment, fetchannouncements } from '../redux/AnnoucmentRedux';
 
 const Container = styled.div`
   width: 100%;
@@ -73,12 +74,12 @@ const IconContainer = styled.div`
 
 function Annoucment() {
   const dispatch = useDispatch()
-
-  const [announcments, setannouncments] = useState()
+  const announcments = useSelector(state => state.announcements.announcements)
   useEffect(() => {
     (async () => {
       const {data} = await req.get("/api/announcment/all")
-      setannouncments(data)}
+      dispatch(fetchannouncements(data))
+    }
     )()
   }, [])
   
@@ -90,6 +91,7 @@ function Annoucment() {
     try {
       const {data} = await req.delete("/api/announcment/active")
       dispatch(setError(data.message))
+      dispatch(disableAllAnnoucments())
     } catch (error) {
       
     }
