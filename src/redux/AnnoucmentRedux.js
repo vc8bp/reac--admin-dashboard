@@ -19,7 +19,7 @@ const announcementslice = createSlice({
         },
         removeAnnoucment: (state, action) => {
             state.announcements = state.announcements.filter(a => {
-                return a._id !== action.payload.id;
+                return a._id !== action.payload;
             })
         },
         editAnnoucment: (state, action) => {

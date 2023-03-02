@@ -3,6 +3,10 @@ import styled from 'styled-components'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditAnnouncments from './EditAnnouncments';
+import { req } from '../axiosReqMethods';
+import { useDispatch } from 'react-redux';
+import { setError } from '../redux/MessageRedux';
+import { removeAnnoucment } from '../redux/AnnoucmentRedux';
 
 const TableWrapper = styled.div`
   margin-top: 1rem;
@@ -33,12 +37,25 @@ const Td = styled.td`
 
 function AnnoucmentsTable({announcments}) {
 
+    const dispatch = useDispatch()
+
     const [editIsOpen, setEditIsOpen] = useState(false)
     const [editAnnoucmentInfo, setEditAnnoucmentInfo] = useState()
   
     const handleEdit = (a) => {
       setEditAnnoucmentInfo(a)
       setEditIsOpen(true)
+    }
+
+    const handleDelete = async (id) => {
+      try {
+        const {data} = await req.delete(`/api/announcment/${id}`);
+        dispatch(setError(data.message))
+        dispatch(removeAnnoucment(id))
+      } catch (error) {
+        console.log(error.response.data.message)
+        dispatch(setError(error.response.data.message))
+      }
     }
   return (
     <>
@@ -62,7 +79,7 @@ function AnnoucmentsTable({announcments}) {
                 <Td>{new Date(a.updatedAt).toLocaleDateString()}</Td>
                 <Td>
                 <EditIcon onClick={() => handleEdit(a)}/>
-                <DeleteIcon/>
+                <DeleteIcon onClick={() => handleDelete(a._id)}/>
                 </Td>
             </Tr>
             })}
