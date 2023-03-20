@@ -10,7 +10,6 @@ function getAccessToken() {
     return currentUser ? currentUser?.accessToken : null
   }
 
-
 export const req = axios.create({
     baseURL,
 });

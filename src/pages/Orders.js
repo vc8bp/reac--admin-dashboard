@@ -1,10 +1,11 @@
-import React, { useEffect , useState} from 'react'
+import React, { useCallback, useEffect , useRef, useState} from 'react'
 import OrdersTabel from '../components/OrdersTabel.js'
 import styled from 'styled-components'
 import { req } from '../axiosReqMethods.js'
 import { setError } from '../redux/MessageRedux.js'
 import { useDispatch } from 'react-redux'
 import AddIcon from '@mui/icons-material/Add';
+import axios from 'axios'
 
 
 
@@ -26,7 +27,7 @@ const Wrapper = styled.div`
 const Title = styled.h1`
     font-size: 1.25rem;
 `
-const FilterSection = styled.div`
+const FilterSection = styled.form`
     max-width: 100%;
     display: flex;
     padding: 1.5rem 1rem;
@@ -77,36 +78,53 @@ const Search = styled.button`
         background-color: #02a8a8;
     }
 `
+const LoadMoreBtn = styled.p`
+    margin: 1rem auto;
+    width: max-content;
+    cursor: pointer;
+    :hover {
+        text-decoration: underline;
+        color: teal;
+    }
+`
 
  
 function Orders() {
+    
     const dispatch = useDispatch()
-    const [orders, setOrders] = useState()
-    useEffect(() => {
-        (async () => {
-            try {
-                const {data} = await req.get('/api/orders')
-                setOrders(data)
-            } catch (error) {
-                dispatch(setError("failed to fetch orders"))
-            }
-        })()
-    },[])
+    const [orders, setOrders] = useState([])
+    const [page, setPage] = useState(1)
 
-    const [queries, setQueries] = useState({})
+    const [queries, setQueries] = useState()
     const handleS = (e, {type}) => {
         if(type === "search") setQueries(p => ({...p, [type]: e.target.value}))
         if(type === "status") setQueries(p => ({...p, [type]: e.target.value}))
         if(type === "sort") setQueries(p => ({...p, [type]: e.target.value}))
     } 
 
-    const search = async () => {
+     
+    const fetch = async (axiosCancelToken) => {
         try {
-            const {data} = await req.get(`/api/orders/?${new URLSearchParams(queries)}`)
-            setOrders(data)
+            const {data} = await req.get(`/api/orders/?page=${page}&${new URLSearchParams(queries)}`, {cancelToken: axiosCancelToken.token})
+            setOrders(p => [...p, ...data])
         } catch (error) {
+            if(error.response.status === 404) return  dispatch(setError(error.response.data.message))
+            if(axios.isCancel(error)) return setOrders([]) //req canceled by user
             dispatch(setError("failed to fetch orders"))
         }
+    }
+    useEffect(() => {
+        const axiosCancelToken = axios.CancelToken.source()  
+        fetch(axiosCancelToken)
+        return () => axiosCancelToken.cancel()
+    }, [page])
+
+    const search = async (e) => {
+        const axiosCancelToken = axios.CancelToken.source()  
+        e.preventDefault()
+        setPage(1)
+        setOrders([])
+        fetch(axiosCancelToken)
     }
 
   return (
@@ -114,8 +132,8 @@ function Orders() {
         <Title>Products</Title>
         <Wrapper>
             
-            <FilterSection>
-                <SearchProduct placeholder='Search by customer number' onChange={(e) => handleS(e, {type: "search"})}></SearchProduct>
+            <FilterSection onSubmit={search}>
+                <SearchProduct type="tel" placeholder='Search by customer number' onChange={(e) => handleS(e, {type: "search"})}></SearchProduct>
                 <Sections onChange={(e) => handleS(e, {type: "status"})}>
                     <Options hidden>Status</Options>
                     <Options value="pending">Pending</Options>
@@ -130,9 +148,10 @@ function Orders() {
                     <Options value="newest">New Orders</Options>
                     <Options value="oldest">Old Orders (default)</Options>
                 </Sections>
-                <Search onClick={search}><AddIcon/>Search</Search>
+                <Search><AddIcon/>Search</Search>
             </FilterSection>
-            <OrdersTabel orders={orders} setOrders={setOrders}/>
+            <OrdersTabel orders={orders} setOrders={setOrders} />
+            <LoadMoreBtn onClick={() => setPage(p => p+1)}>Load more</LoadMoreBtn>
         </Wrapper>
     </Container>
   )

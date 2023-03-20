@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,7 +7,10 @@ import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import Confirmation from './Confirmation';
 import ProductNotFound from './ProductNotFound';
 import EditProduct from './EditProducts';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { req } from '../axiosReqMethods';
+import { deleteProduct } from '../redux/Products';
+import { setError } from '../redux/MessageRedux';
 
 const TableWrapper = styled.div`
     margin-top: 20px;   
@@ -75,17 +78,23 @@ const Image = styled.img`
 
 
 function ProductsComp() {
+    const dispatch = useDispatch()    
     const products = useSelector(p => p.Products.products)
-
     const [DeleteisOpen, setDeleteIsOpen] = useState(false)
-    const [DeleteProduct, setDeleteProduct] = useState("")
+    const [DeleteProductInfo, setDeleteProductInfo] = useState("")
 
     const HandleDelete = (product) => {
-        setDeleteProduct(product)
+        setDeleteProductInfo(product)
         setDeleteIsOpen(true)
     }
     const DeleProduct = async () => {
-        console.log("yes delete it")
+        try {
+            const {data} = await req.delete(`/api/products/${DeleteProductInfo._id}`)
+            dispatch(setError(data.message))
+            dispatch(deleteProduct(DeleteProductInfo._id))
+        } catch (error) {
+            dispatch(setError(error.response.data.message))
+        }
         setDeleteIsOpen(false)
     }
 
@@ -95,6 +104,7 @@ function ProductsComp() {
     const [EditProductInfo, setEditProductInfo] = useState();
 
     const HandleEdit = (product) => {
+        console.log(product)
         setEditIsOpen(true) 
         setEditProductInfo(product)
     }
@@ -140,7 +150,9 @@ function ProductsComp() {
                         <Td>DETAILS</Td>
                         <Td>
                             <div>
-                                <RemoveRedEyeOutlinedIcon/><EditIcon onClick={() => HandleEdit(p)} /><DeleteIcon onClick={() => HandleDelete(p)} />
+                                <RemoveRedEyeOutlinedIcon onClick={() => window.open(`${process.env.REACT_APP_MAIN_SITE_URL}/product/${p?._id}`, "_blank")}/>
+                                <EditIcon onClick={() => HandleEdit(p)} />
+                                <DeleteIcon onClick={() => HandleDelete(p)}/>
                             </div>
                         </Td>
                     </Tr>
@@ -151,7 +163,7 @@ function ProductsComp() {
 
         <Confirmation isOpen={DeleteisOpen} setIsOpen={setDeleteIsOpen} action={DeleProduct} >
             <div style={{display: "flex", flexDirection:"column", textAlign: "center", gap: "0.5rem"}} >
-                <b>Are You Sure! Want to Delete <span style={{color: "red"}}>{DeleteProduct.title}</span> Record?</b>
+                <b>Are You Sure! Want to Delete <span style={{color: "red"}}>{DeleteProductInfo.title}</span> Record?</b>
                 <span>Do you really want to delete these records? You can't view this in your list anymore if you delete!</span>
             </div>
         </Confirmation>

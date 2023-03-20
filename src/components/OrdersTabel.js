@@ -96,7 +96,6 @@ const handleStateChange = async (id, e) => {
     }
 
 }
-
   return ( <>
     <TableWrapper>
         <Table>
@@ -118,7 +117,7 @@ const handleStateChange = async (id, e) => {
                     return <Tr key={o._id}>
                         <Td><ContentCopyIcon onClick={() => navigator.clipboard.writeText(o._id)}/></Td>
                         <Td>{new Date(o.createdAt).toDateString()}</Td>
-                        <Td>{`${o.userInfo.address.city}, ${o.userInfo.address.state}`}</Td>
+                        <Td>{`${o.userInfo.address?.city}, ${o.userInfo.address?.state}`}</Td>
                         <Td>{o.userInfo.address.mobile}</Td>
                         <Td>{o.price}</Td>
                         <Td><Status status={o.orderStatus}>{o.orderStatus.charAt(0).toUpperCase() + o.orderStatus.slice(1)}</Status></Td>

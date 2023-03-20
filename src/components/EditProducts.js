@@ -132,6 +132,18 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
   const handleChange = (e, type) => {
     const { name, value} = e.target;
     const property = type || name
+    console.log("input changed on " + title)
+
+    if(name ==="img"){
+      const file = e.target.files[0];
+      const filereader = new FileReader();
+      filereader.readAsDataURL(file);
+      filereader.onload = () => {  
+        console.log("image changed on " + title)
+        setProduct(p => ({...p, img: filereader.result}))
+      }
+      return
+    }
     
     const prev = Product[property]; //we ddnt used Product.property bcz iw will find a field where the key is property but in this cal it will find the value of property
     if(Array.isArray(prev)) {
@@ -145,37 +157,25 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
   }
 
   const handleSubmit = async () => {
-
     if(!EditProductInfo) {
       console.log("editProduct")
-      
-      addProductapi(dispatch, Product)
+      addProductapi(dispatch, Product, setIsOpen)
     } else {
       console.log("no editProduct")
-      
-      //const res = await req.put(`/api/products/${Product._id}`, {image: imageBASE});
-      editProductapi(dispatch,Product)
-    }
-    
-    setIsOpen(false)
+      editProductapi(dispatch,Product, setIsOpen)
+    } 
   }
 
   const handleDelete = (property, value) => {
     setProduct(p => ({...p, [property]: p[property].filter(i => i!==value)}))
   }
 
+  useEffect(() => {
+    console.log(Product)
+  },[Product])
 
 
-  //handle image
-  const HandleIMG = (e) => {
-    const file = e.target.files[0];
-    const filereader = new FileReader();
-    filereader.readAsDataURL(file);
-    filereader.onload = () => {  
-      setProduct(p => ({...p, img: filereader.result}))
-    }
-  }
-
+  const ifForImf = Math.random() * 1000 //this is used Because Img id was chasing bcz this component was rendered 2 time 1 for add and another for update
   return (
     <EditModal isOpen={isOpen} setIsOpen={setIsOpen} action={handleSubmit} title={title} desc={desc}>
               <Container>
@@ -184,8 +184,9 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
               <label>Product Image</label>
             </Left>
             <Right>
-            <input accept="image/jpeg, image/png" type="file" style={{display: "none"}} id="file" onChange={HandleIMG}/>
-              <label htmlFor="file">
+            
+            <input accept="image/jpeg, image/png" name='img' type="file" style={{display: "none"}} id={ifForImf} onChange={e => handleChange(e)}/>
+              <label htmlFor={ifForImf}>
                 <UploadImage>
                   <CloudUploadOutlinedIcon/>
                   <UploadTitle>Drag your image here</UploadTitle>
@@ -255,12 +256,12 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
 
           <Section>
             <Left><label>Product Quantity</label></Left>
-            <Right><Input name="quantity" value={Product.quantity} onChange={e => handleChange(e)}/></Right>
+            <Right><Input type="number" name="quantity" value={Product.quantity} onChange={e => handleChange(e)}/></Right>
           </Section>
 
           <Section>
             <Left><label>Product Price</label></Left>
-            <Right><Input name="price" value={Product.price} onChange={e => handleChange(e)}/></Right>
+            <Right><Input type="number" name="price" value={Product.price} onChange={e => handleChange(e)}/></Right>
           </Section>
           
         </Container>

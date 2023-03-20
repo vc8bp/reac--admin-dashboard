@@ -6,6 +6,7 @@ import ProductsComp from '../components/ProductsComp'
 import { setProducts } from '../redux/Products'
 import { useDispatch } from 'react-redux';
 import EditProduct from '../components/EditProducts';
+import axios from 'axios';
 
 
 const Container = styled.div`
@@ -96,10 +97,11 @@ function Products() {
                 const { data } = await req.get(url)
                 dispatch(setProducts(data))
             } catch (error) {
+                if(axios.isCancel(error)) return
                 console.log(error)
             }  
         })()
-    },[querie, dispatch])
+    },[querie])
 
 
     //add product

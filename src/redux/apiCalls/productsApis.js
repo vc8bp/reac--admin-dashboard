@@ -1,23 +1,27 @@
 import { req } from "../../axiosReqMethods";
-import { editProduct } from "../Products";
+import { editProduct, addProducts } from "../Products";
 import { setError } from "../MessageRedux"
 
 
-export const editProductapi = async (dispatch, product) => {
+export const editProductapi = async (dispatch, product, setIsOpen) => {
     try {
         const res = await req.put(`/api/products/${product._id}`, product);
         dispatch(editProduct(res?.data))
         dispatch(setError("product updated successfully"))
+        setIsOpen(false)
     } catch (error) {
-        dispatch(setError(error.responce.data.message))
+        dispatch(setError(error.response.data.message))
         console.log(error)
     }
 }
-export const addProductapi = async (dispatch, product) => {
+export const addProductapi = async (dispatch, product, setIsOpen) => {
     try {
         const res = await req.post(`/api/products`, product);
-        dispatch(editProduct(res?.data));      
+        dispatch(addProducts(res?.data));      
+        dispatch(setError("product Added successfully"))
+        setIsOpen(false)
     } catch (error) {
+        dispatch(setError(error.response.data.message))
         console.log(error)
     }
 }
