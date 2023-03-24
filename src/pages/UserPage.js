@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { req } from '../axiosReqMethods'
 import { updateUser } from '../redux/apiCalls/users'
-import { mobile } from '../Responsive'
 
 
 const Container = styled.div`
@@ -108,7 +107,6 @@ const SubmitButton = styled.button`
   }
 `
 
-const BottomSection = styled.div``
 
 
 
@@ -129,7 +127,7 @@ function UserPage() {
     }
     fetchuser();
     
-  },[])
+  },[id])
 
   const inputOnchange = (e) => {
     const { name, value } = e.target
