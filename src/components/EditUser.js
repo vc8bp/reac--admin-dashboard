@@ -44,28 +44,6 @@ const Right = styled.div`
     }
   }
 `
-const UploadImage = styled.div`  
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px dashed black;
-  padding: 1rem;
-
-  > svg {
-    color: teal;
-  }
-`
-const UploadTitle = styled.span`
-
-`
-const UploadDesc = styled.p`
-  font-size: 0.7rem;
-`
-
-
-
 
 function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc, action}) {
   const DefaultValues = {firstName:"", lastName:"", email:"", phone:"", number:"", isAdmin: false}
@@ -94,21 +72,9 @@ function EditUser({isOpen, setIsOpen, EditUserInfo, title, desc, action}) {
 
   return (
     <EditModal isOpen={isOpen} setIsOpen={setIsOpen} action={handleSubmit} title={title} desc={desc}>
-              <Container>
-          <Section>
-            <Left>
-              <label>User Image</label>
-            </Left>
-            <Right>
-              <UploadImage>
-                <CloudUploadOutlinedIcon/>
-                <UploadTitle>Drag your image here</UploadTitle>
-                <UploadDesc>(Only *.jpeg and *.png images will be accepted)</UploadDesc>
-              </UploadImage>
-            </Right>
-          </Section>
+      <Container>
 
-           <Section>
+         <Section>
             <Left><label>First name</label></Left>
             <Right><input name="firstName" value={User?.firstName} onChange={e => handleChange(e)}/></Right>
           </Section>

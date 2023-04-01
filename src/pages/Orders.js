@@ -54,10 +54,22 @@ const FilterSection = styled.form`
         background-color: white;
     }
 `
-const SearchProduct = styled.input`
+const SearchOrder = styled.input`
     padding: 0.7rem 0.5rem;
     outline: none;
     flex: 2;   
+
+    /* Chrome, Safari, Edge, Opers to hide number controlls */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
 `
 const Sections = styled.select`
     flex: 1;
@@ -109,7 +121,7 @@ function Orders() {
             setOrders(p => [...p, ...data])
         } catch (error) {
             if(error.response.status === 404) return  dispatch(setError(error.response.data.message))
-            if(axios.isCancel(error)) return setOrders([]) //req canceled by user
+            if(axios.isCancel(error)) return setOrders([]) //req canceled by Order
             dispatch(setError("failed to fetch orders"))
         }
     }
@@ -129,11 +141,11 @@ function Orders() {
 
   return (
 <Container>
-        <Title>Products</Title>
+        <Title>Orders</Title>
         <Wrapper>
             
             <FilterSection onSubmit={search}>
-                <SearchProduct type="tel" placeholder='Search by customer number' onChange={(e) => handleS(e, {type: "search"})}></SearchProduct>
+                <SearchOrder type="number" placeholder='Search by customer number' onChange={(e) => handleS(e, {type: "search"})}></SearchOrder>
                 <Sections onChange={(e) => handleS(e, {type: "status"})}>
                     <Options hidden>Status</Options>
                     <Options value="pending">Pending</Options>

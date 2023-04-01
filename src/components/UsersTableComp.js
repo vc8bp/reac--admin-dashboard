@@ -1,10 +1,14 @@
 import React, {useState} from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import EditUser from '../components/EditUser'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Confirmation from './Confirmation';
+import { req } from '../axiosReqMethods';
+import { deleteUser } from '../redux/UseersComponentRedux';
+import { setError } from '../redux/MessageRedux';
 
 
 const TableWrapper = styled.div`
@@ -72,6 +76,7 @@ const IsAdmin = styled.div`
 `
 
 function UsersTableComp() {
+    const dispatch = useDispatch()
     const data = useSelector(state => state.users);
     const users = data.fetchedUsers;
     console.log()
@@ -81,9 +86,22 @@ function UsersTableComp() {
     const [isOpen, setIsOpen] = useState(false)
     const [EditUserInfo, setEditUserInfo] = useState(null)
 
-    const handleEdit = () => {
-        console.log("i am action")
+    //delete user
+    const [isWarningOpen, setIsWarningOpen] = useState(false)
+    const [DeleteUserInfo, setDeleteUserInfo] = useState(null)
+
+    const DeleteUser = async () => {
+        const userId = DeleteUserInfo._id;
+        try {
+            const {data} = await req.delete(`/api/users/${userId}`)
+            dispatch(deleteUser(userId))
+            dispatch(setError(`${DeleteUserInfo.firstName} ${DeleteUserInfo.lastName}'s Account is deleted Successfully!!`))
+        } catch (error) {
+            dispatch(setError(`Failed to delete ${DeleteUserInfo.firstName} ${DeleteUserInfo.lastName}'s Account`))
+        }
+        setIsWarningOpen(false)
     }
+
 
   return ( <>
     <TableWrapper>
@@ -115,7 +133,8 @@ function UsersTableComp() {
                         <Td><IsAdmin value={u.isAdmin}>{JSON.stringify(u.isAdmin)}</IsAdmin></Td>
                         <Td>
                             <div>
-                                <EditIcon onClick={() => {setEditUserInfo(u); setIsOpen(true)}} /><DeleteIcon/>
+                                <EditIcon onClick={() => {setEditUserInfo(u); setIsOpen(true)}} />
+                                <DeleteIcon onClick={() => {setDeleteUserInfo(u); setIsWarningOpen(true)}}/>
                             </div>
                         </Td>
                     </Tr>
@@ -123,7 +142,13 @@ function UsersTableComp() {
             </Tbody>
         </Table>
     </TableWrapper>
-    <EditUser EditUserInfo={EditUserInfo} isOpen={isOpen} setIsOpen={setIsOpen} action={handleEdit} title="Edit user" desc="Updated necessary information of Users from here"/>
+    <Confirmation isOpen={isWarningOpen} setIsOpen={setIsWarningOpen} action={DeleteUser} >
+        <div style={{display: "flex", flexDirection:"column", textAlign: "center", gap: "0.5rem"}} >
+            <b>Are You Sure! Want to Delete <span style={{color: "red"}}>{`${DeleteUserInfo?.firstName} ${DeleteUserInfo?.lastName}`}</span> This User?</b>
+            <span>Do you really want to delete these User? You can't view this in your list anymore if you delete!</span>
+        </div>
+    </Confirmation>
+    <EditUser EditUserInfo={EditUserInfo} isOpen={isOpen} setIsOpen={setIsOpen} title="Edit user" desc="Updated necessary information of Users from here"/>
     </>
     
   )

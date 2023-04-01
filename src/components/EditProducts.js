@@ -5,6 +5,7 @@ import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { useDispatch } from 'react-redux';
 import { addProductapi, editProductapi } from '../redux/apiCalls/productsApis';
+import { setError } from '../redux/MessageRedux';
 
 
 const Container = styled.div`
@@ -156,7 +157,13 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
     e.target.value = "";
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if(!Product.img) return dispatch(setError("Product Image can't be empty, Please add a Image!"));
+    if(!Product.size.length) return dispatch(setError("Product Size can't be empty, Please add at least 1 size"));
+    if(!Product.color.length) return dispatch(setError("Product Color can't be empty, Please add at least 1 color"))
+    if(!Product.categories.length) return dispatch(setError("Product Categories can't be empty, Please add at least 1 categories"))
+
     if(!EditProductInfo) {
       console.log("editProduct")
       addProductapi(dispatch, Product, setIsOpen)
@@ -199,12 +206,12 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
 
            <Section>
             <Left><label>Product Name/Title</label></Left>
-            <Right><Input name="title" value={Product.title} onChange={e => handleChange(e)}/></Right>
+            <Right><Input name="title" value={Product.title} onChange={e => handleChange(e)} required/></Right>
           </Section>
 
           <Section>
             <Left><label>Product Number</label></Left>
-            <Right><Input name="productno" value={Product.productno} onChange={e => handleChange(e)}/></Right>
+            <Right><Input name="productno" value={Product.productno} onChange={e => handleChange(e)} required/></Right>
           </Section>
 
           <Section>
@@ -237,7 +244,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
 
           <Section>
             <Left><label>Product Description</label></Left>
-            <Right><Textarea name="desc" value={Product.desc || ""} onChange={e => handleChange(e)}/></Right>
+            <Right><Textarea name="desc" value={Product.desc || ""} onChange={e => handleChange(e)} required/></Right>
           </Section>
 
           <Section>
@@ -256,12 +263,12 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
 
           <Section>
             <Left><label>Product Quantity</label></Left>
-            <Right><Input type="number" name="quantity" value={Product.quantity} onChange={e => handleChange(e)}/></Right>
+            <Right><Input type="number" name="quantity" value={Product.quantity} onChange={e => handleChange(e)} required/></Right>
           </Section>
 
           <Section>
             <Left><label>Product Price</label></Left>
-            <Right><Input type="number" name="price" value={Product.price} onChange={e => handleChange(e)}/></Right>
+            <Right><Input type="number" name="price" value={Product.price} onChange={e => handleChange(e)} required/></Right>
           </Section>
           
         </Container>

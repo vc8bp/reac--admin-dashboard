@@ -34,6 +34,16 @@ const Td = styled.td`
   padding: 1rem;
 `
 
+const Status = styled.p`
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+  border-radius: 50px;
+  background-color: ${props => props.status ? "rgb(222 255 190);" : "rgb(255 223 223);"};
+  color: ${props => props.status ? "rgb(92 189 0);;" : "rgb(255 101 101)"};
+  border: 1px solid ${props => props.status ? "rgb(92 189 0);;" : "rgb(255 101 101)"};
+`;
+
 
 function AnnoucmentsTable({announcments}) {
 
@@ -74,7 +84,7 @@ function AnnoucmentsTable({announcments}) {
             {announcments.map(a => {
                 return <Tr key={a._id}>
                 <Td>{a.title}</Td>
-                <Td>{JSON.stringify(a.active)}</Td>
+                <Td><Status status={a.active}>{a.active ? "Activated" : "Deactivated"}</Status></Td>
                 <Td>{new Date(a.createdAt).toLocaleDateString()}</Td>
                 <Td>{new Date(a.updatedAt).toLocaleDateString()}</Td>
                 <Td>

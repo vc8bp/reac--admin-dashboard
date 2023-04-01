@@ -40,6 +40,13 @@ const userSlice = createSlice({
             state.error = null;
         },
 
+        deleteUser: (state, action) => {
+            state.fetchedUsers = state.fetchedUsers.filter(u => {
+                return u._id !== action.payload;
+            })
+
+        },
+
         updateUserRedux : (state, action) => {
             console.log("update user redux")
             state.fetchedUsers.forEach((value, index) => {
@@ -51,6 +58,6 @@ const userSlice = createSlice({
     }
 })
 
-export const {fetchStart, fetchFailed, fetchSuccess, reserError, clearUsers, updateUserRedux} = userSlice.actions;
+export const {fetchStart, fetchFailed, fetchSuccess, reserError, clearUsers, updateUserRedux, deleteUser} = userSlice.actions;
 export default userSlice.reducer;
 

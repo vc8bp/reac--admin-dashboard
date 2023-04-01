@@ -132,9 +132,6 @@ function UserPage() {
   const inputOnchange = (e) => {
     const { name, value } = e.target
     setuser((prev) => ({...prev , [name]: value}));
-    console.log(user);
-    console.log(user.isAdmin)
-    
   }
 
   const onSubmit = (e) => {

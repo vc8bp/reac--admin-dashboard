@@ -50,10 +50,12 @@ const FilterSection = styled.form`
         background-color: white;
     }
 `
-const SearchProduct = styled.input`
+const SearchUsers = styled.input`
     padding: 0.7rem 0.5rem;
     outline: none;
     flex: 3;   
+
+
 `
 
 const Search = styled.button`
@@ -91,15 +93,13 @@ function Users() {
         }
     },[])
 
-
-    //add product
   return (
     <Container>
         <Title>Users</Title>
         <Wrapper>
             
             <FilterSection>
-                <SearchProduct placeholder='Search by User by name/email/phone/id ' onChange={(e) => handleS(e, {type: "search"})}></SearchProduct>
+                <SearchUsers placeholder='Search by User by name/email/phone/id ' onChange={(e) => handleS(e, {type: "search"})} ></SearchUsers>
                 <Search type='submit' onClick={handleSearch}>Search</Search>
             </FilterSection>
             <UsersTableComp/>

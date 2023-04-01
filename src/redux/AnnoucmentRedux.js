@@ -24,6 +24,7 @@ const announcementslice = createSlice({
         },
         editAnnoucment: (state, action) => {
             state.announcements.forEach((a, index) => {
+                if(action.payload.active === true) state.announcements[index].active = false
                 if(a._id === action.payload._id) {
                     state.announcements[index] = action.payload;
                 }

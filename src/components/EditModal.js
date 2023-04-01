@@ -16,7 +16,7 @@ const BackDrop = styled.div`
     transition: right 0.5s ease-in-out;
 `
 
-const Container = styled.div`
+const Container = styled.form`
     z-index: 51;
     position: fixed;
     top: 0;
@@ -144,7 +144,7 @@ function EditModal({children, isOpen, setIsOpen, title, desc, action}) {
   return ReactDOM.createPortal(
     <>
         {isOpen && <BackDrop isOpen={isOpen}/> }
-        <Container isOpen={isOpen}>
+        <Container isOpen={isOpen} onSubmit={action} onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} >
             <Top>
                     <h3>{title}</h3>
                     <p>{desc}</p>
@@ -154,8 +154,8 @@ function EditModal({children, isOpen, setIsOpen, title, desc, action}) {
                 {children}
             </Middle>
             <Bottom>
-                <CancelBtn onClick={() => setIsOpen(false)}>Cancel</CancelBtn>
-                <SubmitBtn onClick={action} >{title}</SubmitBtn>
+                <CancelBtn type='button' onClick={() => setIsOpen(false)}>Cancel</CancelBtn>
+                <SubmitBtn type='submit'>{title}</SubmitBtn>
             </Bottom>
             
         </Container>

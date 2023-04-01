@@ -106,7 +106,7 @@ function Products() {
 
     //add product
     const [EditIsOpen, setEditIsOpen] = useState(false)
-    
+     
   return (
     <Container>
         <Title>Products</Title>

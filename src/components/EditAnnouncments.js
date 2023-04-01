@@ -113,7 +113,7 @@ function EditAnnouncments({isOpen, setIsOpen, EditAnnouncmentsInfo, title, desc}
         <Container>
             <Section>
                 <Left><label>Product Description</label></Left>
-                <Right><Textarea name="title" value={annoucment.title} onChange={e => handleChange(e)}/></Right>
+                <Right><Textarea name="title" value={annoucment.title} onChange={e => handleChange(e)} required /></Right>
             </Section>
 
             <Section>
